@@ -1,2 +1,1 @@
-# acuoci
-OpenSMOKEpp_RespecthConverter
+# OpenSMOKE++_RespecthConverter
