@@ -25,7 +25,7 @@ void DatabaseSpecies::SetFromXML(const boost::filesystem::path file_name)
 	}
 
 	// Number of species
-	ns_ = names_.size();
+	ns_ = static_cast<unsigned int>(names_.size());
 	is_active_ = true;
 
 	// Print on the screen

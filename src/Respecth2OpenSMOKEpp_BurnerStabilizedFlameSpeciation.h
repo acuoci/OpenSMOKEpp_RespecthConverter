@@ -51,8 +51,9 @@ public:
 
 private:
 
-	enum class ApparatusKind { FLAME }				apparatus_kind_;
-	enum class ApparatusMode { BURNER_STABILIZED }	apparatus_mode_;
+	enum class ApparatusKind { FLAME }					apparatus_kind_;
+	enum class ApparatusMode { BURNER_STABILIZED }		apparatus_mode_;
+	enum class Type { ASSIGNED_M, ASSIGNED_SL }			type_;
 	
 	bool fixed_temperature_profile_;
 

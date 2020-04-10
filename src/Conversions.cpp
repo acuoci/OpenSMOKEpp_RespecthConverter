@@ -49,8 +49,8 @@ void CheckAndConvertUnits(const std::string name, double& value, std::string& un
 	}
 	else if (name == "pressure")
 	{
-		if (units != "atm" && units != "bar" && units != "torr" && units != "Torr" && units != "Pa" && units != "kPa" && units != "MPa")
-			ConversionErrorMessage("Unknown pressure units: " + units + ". Available units: atm | bar | torr | Torr | Pa | kPa | MPa");
+		if (units != "atm" && units != "bar" && units != "torr" && units != "Torr" && units != "Pa" && units != "kPa" && units != "MPa" && units != "mbar")
+			ConversionErrorMessage("Unknown pressure units: " + units + ". Available units: atm | bar | mbar | torr | Torr | Pa | kPa | MPa");
 
 		if (units == "torr" || units == "Torr")
 		{
@@ -66,6 +66,11 @@ void CheckAndConvertUnits(const std::string name, double& value, std::string& un
 		{
 			value *= 1.e6;
 			units = "Pa";
+		}
+		else if (units == "mbar")
+		{
+			value /= 1000.;
+			units = "bar";
 		}
 	}
 	else if (name == "residence time" || name == "ignition delay" || name == "time")
@@ -126,6 +131,11 @@ void CheckAndConvertUnits(const std::string name, double& value, std::string& un
 	{
 		if (units != "m" && units != "dm" && units != "cm" && units != "mm")
 			ConversionErrorMessage("Unknown distance units: " + units + ". Available units: m | dm | cm | mm");
+	}
+	else if (name == "laminar burning velocity")
+	{
+		if (units != "m/s" && units != "cm/s" && units != "mm/s")
+			ConversionErrorMessage("Unknown laminar burning velocity units: " + units + ". Available units: m/s | cm/s | mm/s");
 	}
 	else
 	{

@@ -54,9 +54,11 @@ Respecth2OpenSMOKEpp_IgnitionDelay::Respecth2OpenSMOKEpp_IgnitionDelay
 	else ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: flow reactor | shock tube | rapid compression machine");
 
 	// Read constant values
+	std::cout << " * Reading commonProperties section..." << std::endl;
 	ReadConstantValueFromXML();
 
 	// Check constant values
+	std::cout << " * Checking input data from commonProperties section..." << std::endl;
 	if (constant_temperature_ == false && constant_pressure_ == true && constant_composition_ == true)
 		type_ = Type::VARIABLE_T;
 	else if (constant_temperature_ == true || constant_pressure_ == false || constant_composition_ == true)
@@ -64,17 +66,24 @@ Respecth2OpenSMOKEpp_IgnitionDelay::Respecth2OpenSMOKEpp_IgnitionDelay
 	else if (constant_temperature_ == false || constant_pressure_ == false || constant_composition_ == true)
 		type_ = Type::VARIABLE_TP;
 	else
-		ErrorMessage("Experiment type: " + experiment_type_ + ". Possible combinations of constant variables: (P,X) | (T,X) | (X)");
+		ErrorMessage("Possible combinations of constant variables: (P,X) | (T,X) | (X)");
 
 	// Read temperatures
 	if (constant_temperature_ == false)
+	{
+		std::cout << " * Reading dataGroup section (temperature)..." << std::endl;
 		ReadNonConstantValueFromXML(ptree_, "temperature", t_values_, t_units_);
+	}
 
 	// Read pressures
 	if (constant_pressure_ == false)
+	{
+		std::cout << " * Reading dataGroup section (pressure)..." << std::endl;
 		ReadNonConstantValueFromXML(ptree_, "pressure", p_values_, p_units_);
+	}
 
 	// Read ignition delay times
+	std::cout << " * Reading dataGroup section (ignition delay)..." << std::endl;
 	ReadNonConstantValueFromXML(ptree_, "ignition delay", tau_values_, tau_units_);
 
 	// Check for possible v-t history
@@ -90,6 +99,8 @@ Respecth2OpenSMOKEpp_IgnitionDelay::Respecth2OpenSMOKEpp_IgnitionDelay
 
 void Respecth2OpenSMOKEpp_IgnitionDelay::WriteSimulationData(std::ofstream& fOut)
 {
+	std::cout << "   - simulation data" << std::endl;
+
 	fOut << "Dictionary BatchReactor" << std::endl;
 	fOut << "{" << std::endl;
 	fOut << "        @KineticsFolder          " << kinetics_folder_.string() << ";" << std::endl;
@@ -146,9 +157,11 @@ void Respecth2OpenSMOKEpp_IgnitionDelay::WriteAdditionalFiles()
 {
 	if (v_history_units_.size() != 0)
 	{
+		std::cout << "   - additional files" << std::endl;
+
 		for (unsigned int i = 0; i < v_history_units_.size(); i++)
 		{
-			boost::filesystem::path file_name_cvs = file_name_xml_.stem();
+			boost::filesystem::path file_name_cvs = output_folder_ / file_name_xml_.stem();
 			file_name_cvs += ".";  file_name_cvs += std::to_string(i + 1); file_name_cvs += ".cvs";
 			
 			if (type_ == Type::VARIABLE_TP)

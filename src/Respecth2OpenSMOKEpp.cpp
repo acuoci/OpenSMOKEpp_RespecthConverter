@@ -53,7 +53,15 @@ database_species_(database_species)
 	boost::property_tree::read_xml(file_name.string(), ptree_);
 
 	// File author (M)
-	file_author_ = ptree_.get<std::string>("experiment.fileAuthor");
+	try
+	{
+		file_author_ = ptree_.get<std::string>("experiment.fileAuthor");
+	}
+	catch (const boost::property_tree::ptree_error& e)
+	{
+		std::string message = "Error in parsing the commonProperties section in XML file: " + std::string(e.what());
+		ErrorMessage(message);
+	}
 
 	// File DOI (O)
 	file_doi_ = ptree_.get<std::string>("experiment.fileDOI", "");
@@ -70,18 +78,38 @@ database_species_(database_species)
 	bibliography_.ImportFromXMLTree(ptree_);
 
 	// Experiment type (M)
-	experiment_type_ = ptree_.get<std::string>("experiment.experimentType");
+	try
+	{
+		experiment_type_ = ptree_.get<std::string>("experiment.experimentType");
+	}
+	catch (const boost::property_tree::ptree_error& e)
+	{
+		std::string message = "Error in parsing the commonProperties section in XML file: " + std::string(e.what());
+		ErrorMessage(message);
+	}
 
 	// File name XML (complete path)
 	file_name_xml_ = file_name;
 
 	// Output folder for the specific experiment
-	output_folder_ = output_folder / file_name_xml_.stem();
+	const bool dedicated_folder_ = false; // TODO
+	if (dedicated_folder_ == true)
+	{
+		output_folder_ = output_folder / file_name_xml_.stem();
+		if (!boost::filesystem::exists(output_folder_))
+			boost::filesystem::create_directory(output_folder_);
+	}
+	else
+	{
+		output_folder_ = output_folder;
+	}
 }
 
 void Respecth2OpenSMOKEpp::WriteOnASCIIFile(boost::filesystem::path file_name)
 {
-	std::ofstream fOut(file_name.string(), std::ios::out);
+	std::cout << " * Writing output OpenSMOKE++ file(s)..." << std::endl;
+
+	std::ofstream fOut( (output_folder_ / file_name).string(), std::ios::out);
 	fOut.setf(std::ios::scientific);
 
 	WriteHeaderText(fOut);
@@ -137,8 +165,11 @@ void Respecth2OpenSMOKEpp::ReadConstantValueFromXML()
 	constant_massflowrate_ = false;
 	constant_pressurerise_ = false;
 	constant_volume_ = false;
+	constant_laminarburningvelocity_ = false;
 
 	// Check for constant variables
+
+	try
 	{
 		BOOST_FOREACH(boost::property_tree::ptree::value_type const& node, ptree_.get_child("experiment.commonProperties"))
 		{
@@ -169,11 +200,20 @@ void Respecth2OpenSMOKEpp::ReadConstantValueFromXML()
 
 				if (subtree.get<std::string>("<xmlattr>.name") == "pressure rise")
 					constant_pressurerise_ = true;
+
+				if (subtree.get<std::string>("<xmlattr>.name") == "laminar burning velocity")
+					constant_laminarburningvelocity_ = true;
 			}
 		}
 	}
+	catch (const boost::property_tree::ptree_error& e)
+	{
+		std::string message = "Error in parsing the commonProperties section in XML file: " + std::string(e.what());
+		ErrorMessage(message);
+	}
 
 	// Read constant properties
+	try
 	{
 		BOOST_FOREACH(boost::property_tree::ptree::value_type const& node, ptree_.get_child("experiment.commonProperties"))
 		{
@@ -205,6 +245,10 @@ void Respecth2OpenSMOKEpp::ReadConstantValueFromXML()
 				if (constant_massflowrate_ == true)
 					::ReadConstantValueFromXML(subtree, "flow rate", m_values_, m_units_);
 
+				// Mass flow rate
+				if (constant_laminarburningvelocity_ == true)
+					::ReadConstantValueFromXML(subtree, "laminar burning velocity", sl_values_, sl_units_);
+
 				// Pressure rise
 				if (constant_pressurerise_ == true)
 					::ReadConstantValueFromXML(subtree, "pressure rise", dpdt_values_, dpdt_units_);
@@ -220,5 +264,10 @@ void Respecth2OpenSMOKEpp::ReadConstantValueFromXML()
 				}
 			}
 		}
+	}
+	catch (const boost::property_tree::ptree_error& e)
+	{
+		std::string message = "Error in parsing the commonProperties section in XML file: " + std::string(e.what());
+		ErrorMessage(message);
 	}
 }

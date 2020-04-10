@@ -98,6 +98,10 @@ protected:
 	std::string m_units_;
 	bool constant_massflowrate_;
 
+	std::vector<double> sl_values_;
+	std::string sl_units_;
+	bool constant_laminarburningvelocity_;
+	
 	std::vector<double> tau_values_;
 	std::string tau_units_;
 	bool constant_residencetime_;

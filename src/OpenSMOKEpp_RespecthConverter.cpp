@@ -135,7 +135,11 @@ int main(int argc, char** argv)
 
 	boost::filesystem::path path_output_folder_remote;
 	if (dictionaries(main_dictionary_name_).CheckOption("@OutputFolderRemote") == true)
+	{
 		dictionaries(main_dictionary_name_).ReadPath("@OutputFolderRemote", path_output_folder_remote);
+		if (!boost::filesystem::exists(path_output_folder_remote))
+			boost::filesystem::create_directory(path_output_folder_remote);
+	}
 
 	bool case_sensitive = false;
 	if (dictionaries(main_dictionary_name_).CheckOption("@CaseSensitiveSpecies") == true)
@@ -236,6 +240,11 @@ int main(int argc, char** argv)
 		{
 			Respecth2OpenSMOKEpp_IgnitionDelay reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
 			reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
+		}
+
+		else
+		{
+			OpenSMOKE::FatalErrorMessage("Unknown experiment type: " + experiment_type[j]);
 		}
 	}
 }

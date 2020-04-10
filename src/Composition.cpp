@@ -165,6 +165,8 @@ void Composition::CheckForSpeciesNames(DatabaseSpecies& database_species)
 
 void Composition::Convert2MoleFractionsAndCheckTheSum()
 {
+	bool composition_in_concentration = false;
+
 	for (unsigned int i = 0; i < composition_.size(); i++)
 	{
 		if (units_[i] == "mole fraction")
@@ -186,15 +188,36 @@ void Composition::Convert2MoleFractionsAndCheckTheSum()
 			composition_[i] *= 1.e9;
 			units_[i] = "mole fraction";
 		}
+		else if (units_[i] == "mol/cm3")
+		{
+			composition_in_concentration = true;
+		}
 		else
 		{
-			ErrorMessage("Unknown units for composition: " + units_[i]);
+			ErrorMessage("Unknown units for composition: " + units_[i] + ". Available units: mole fraction | percent | ppm | ppb | mol/cm3");
 		}
 	}
 
+	// In case of composition given in terms of concentration
+	if (composition_in_concentration == true)
+	{
+		// Check if concentration is provided for all the species (and in the same units)
+		for (unsigned int i = 0; i < composition_.size(); i++)
+		{
+			if (units_[i] != "mol/cm3")
+				ErrorMessage("If composition is given in terms of concentration, this must be done for all the species.");
+			units_[i] = "mole fraction";
+		}
+
+		const double ctot = std::accumulate(composition_.begin(), composition_.end(), 0.);
+		for (unsigned int i = 0; i < composition_.size(); i++)
+			composition_[i] /= ctot;
+	}
+
 	// Sum
+	const double sum_threshold = 1.0001e-4;
 	const double sum = std::accumulate(composition_.begin(), composition_.end(), 0.);
-	if (std::fabs(sum - 1.) > 1.e-5)
+	if (std::fabs(sum - 1.) > sum_threshold)
 		ErrorMessage("Sum is not equal to 1: " + std::to_string(sum));
 
 	// Normalization

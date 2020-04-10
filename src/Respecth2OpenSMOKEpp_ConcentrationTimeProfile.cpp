@@ -54,11 +54,13 @@ Respecth2OpenSMOKEpp_ConcentrationTimeProfile::Respecth2OpenSMOKEpp_Concentratio
 	else ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: flow reactor | shock tube | batch");
 
 	// Read constant values
+	std::cout << " * Reading commonProperties section..." << std::endl;
 	ReadConstantValueFromXML();
 
 	// Check constant values
+	std::cout << " * Checking input data from commonProperties section..." << std::endl;
 	if (constant_temperature_ == false || constant_pressure_ == false || constant_composition_ == false)
-		ErrorMessage("Experiment type: " + experiment_type_ + ". T,P and X must be defined as constant variables");
+		ErrorMessage(" T,P and X must be defined as constant variables");
 
 	// Read time profile
 	ReadNonConstantValueFromXML(ptree_, "time", time_profile_values_, time_profile_units_);
@@ -66,6 +68,8 @@ Respecth2OpenSMOKEpp_ConcentrationTimeProfile::Respecth2OpenSMOKEpp_Concentratio
 
 void Respecth2OpenSMOKEpp_ConcentrationTimeProfile::WriteSimulationData(std::ofstream& fOut)
 {
+	std::cout << "   - simulation data" << std::endl;
+
 	if (apparatus_kind_ == ApparatusKind::FLOW_REACTOR)
 	{
 		fOut << "Dictionary PlugFlowReactor" << std::endl;

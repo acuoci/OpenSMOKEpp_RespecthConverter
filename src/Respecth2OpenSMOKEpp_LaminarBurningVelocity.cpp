@@ -52,17 +52,23 @@ Respecth2OpenSMOKEpp_LaminarBurningVelocity::Respecth2OpenSMOKEpp_LaminarBurning
 	else ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: flame");
 
 	// Read constant values
+	std::cout << " * Reading commonProperties section..." << std::endl;
 	ReadConstantValueFromXML();
 
 	// Check constant values
+	std::cout << " * Checking input data from commonProperties section..." << std::endl;
 	if (constant_temperature_ == true && constant_composition_ == true && constant_pressure_ == false)
 		type_ = Type::VARIABLE_P;
 	else if (constant_temperature_ == false && constant_composition_ == true && constant_pressure_ == true)
 		type_ = Type::VARIABLE_T;
 	else if (constant_temperature_ == true && constant_composition_ == false && constant_pressure_ == true)
 		type_ = Type::VARIABLE_COMPOSITION;
+	else if (constant_temperature_ == false && constant_composition_ == false && constant_pressure_ == true)
+		type_ = Type::VARIABLE_T_COMPOSITION;
+	else if (constant_temperature_ == true && constant_composition_ == false && constant_pressure_ == false)
+		type_ = Type::VARIABLE_P_COMPOSITION;
 	else
-		ErrorMessage("Experiment type: " + experiment_type_ + ". Possible combinations of constant variables: (P,X) | (T,X) | (T,P)");
+		ErrorMessage("Possible combinations of constant variables: (P,X) | (T,X) | (T,P) | (P) | (T)");
 
 	// Find pressures
 	if (constant_pressure_ == false)
@@ -78,7 +84,7 @@ Respecth2OpenSMOKEpp_LaminarBurningVelocity::Respecth2OpenSMOKEpp_LaminarBurning
 
 	// Number of simulations
 	{
-		const unsigned int ns = std::max(p_values_.size(), std::max(t_values_.size(), initial_compositions_.size()));
+		const unsigned int ns = static_cast<unsigned int>( std::max(p_values_.size(), std::max(t_values_.size(), initial_compositions_.size())) );
 
 		list_inlet_dicts_.resize(ns);
 		for (unsigned int i = 0; i < ns; i++)
@@ -88,6 +94,8 @@ Respecth2OpenSMOKEpp_LaminarBurningVelocity::Respecth2OpenSMOKEpp_LaminarBurning
 
 void Respecth2OpenSMOKEpp_LaminarBurningVelocity::WriteSimulationData(std::ofstream& fOut)
 {
+	std::cout << "   - simulation data" << std::endl;
+
 	fOut << "Dictionary PremixedLaminarFlame1D" << std::endl;
 	fOut << "{" << std::endl;
 	fOut << "        @KineticsFolder      " << kinetics_folder_.string() << ";" << std::endl;
@@ -116,6 +124,14 @@ void Respecth2OpenSMOKEpp_LaminarBurningVelocity::WriteSimulationData(std::ofstr
 	if (type_ == Type::VARIABLE_COMPOSITION)
 		for (unsigned int i = 0; i < list_inlet_dicts_.size(); i++)
 			WriteMixStatusOnASCII(list_inlet_dicts_[i], fOut, t_values_[0], t_units_, p_values_[0], p_units_, initial_compositions_[i]);
+
+	if (type_ == Type::VARIABLE_T_COMPOSITION)
+		for (unsigned int i = 0; i < list_inlet_dicts_.size(); i++)
+			WriteMixStatusOnASCII(list_inlet_dicts_[i], fOut, t_values_[i], t_units_, p_values_[0], p_units_, initial_compositions_[i]);
+
+	if (type_ == Type::VARIABLE_P_COMPOSITION)
+		for (unsigned int i = 0; i < list_inlet_dicts_.size(); i++)
+			WriteMixStatusOnASCII(list_inlet_dicts_[i], fOut, t_values_[0], t_units_, p_values_[i], p_units_, initial_compositions_[i]);
 
 	fOut << "Dictionary grid" << std::endl;
 	fOut << "{" << std::endl;

@@ -221,6 +221,8 @@ void ReadNonConstantValueFromXML(boost::property_tree::ptree& ptree, const std::
 
 void WriteMixStatusOnASCII(const std::string name, std::ofstream& fOut, const double t, const std::string t_units, const double p, const std::string p_units, const Composition& composition)
 {
+	std::cout << "   - mix status" << std::endl;
+
 	fOut << "Dictionary " << name << std::endl;
 	fOut << "{" << std::endl;
 	fOut << "        @Temperature      " << t << " " << t_units << " ;" << std::endl;
@@ -232,6 +234,8 @@ void WriteMixStatusOnASCII(const std::string name, std::ofstream& fOut, const do
 
 void WriteOutputOptionsOnASCII(const std::string name, std::ofstream& fOut, const int steps_file, const boost::filesystem::path& output_folder)
 {
+	std::cout << "   - output options" << std::endl;
+
 	fOut << "Dictionary " << name << std::endl;
 	fOut << "{" << std::endl;
 	fOut << "        @StepsVideo       1000;" << std::endl;
@@ -256,6 +260,8 @@ void WriteODEParametersOnASCII(const std::string name, std::ofstream& fOut, cons
 
 void WriteParametricAnalysisOnASCII(const std::string name, const std::string type, std::ofstream& fOut, const std::vector<double> values, const std::string units)
 {
+	std::cout << "   - parametric analysis" << std::endl;
+
 	fOut << "Dictionary " << name << std::endl;
 	fOut << "{" << std::endl;
 	fOut << "        @Type          " << type << ";" << std::endl;

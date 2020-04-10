@@ -38,7 +38,7 @@
 #include "Utilities.h"
 
 Respecth2OpenSMOKEpp_BurnerStabilizedFlameSpeciation::Respecth2OpenSMOKEpp_BurnerStabilizedFlameSpeciation
-(	const boost::filesystem::path file_name,
+(const boost::filesystem::path file_name,
 	const boost::filesystem::path kinetics_folder,
 	const boost::filesystem::path output_folder,
 	const std::vector<std::string> species_in_kinetic_mech,
@@ -57,14 +57,22 @@ Respecth2OpenSMOKEpp_BurnerStabilizedFlameSpeciation::Respecth2OpenSMOKEpp_Burne
 	else ErrorMessage("Unknown mode: " + apparatus_mode + ". Available: burner-stabilized");
 
 	// Read constant values
+	std::cout << " * Reading commonProperties section..." << std::endl;
 	ReadConstantValueFromXML();
 
 	// Check constant values
-	if (constant_temperature_ == false || constant_pressure_ == false || constant_composition_ == false || constant_massflowrate_ == false)
-		ErrorMessage("Experiment type: " + experiment_type_ + ". (T,P,X,m) must be defined as constant variables");
+	std::cout << " * Checking input data from commonProperties section..." << std::endl;
+	if (constant_temperature_ == true && constant_pressure_ == true && constant_composition_ == true && constant_massflowrate_ == true && constant_laminarburningvelocity_ == false)
+		type_ = Type::ASSIGNED_M;
+	else if (constant_temperature_ == true && constant_pressure_ == true && constant_composition_ == true && constant_massflowrate_ == false && constant_laminarburningvelocity_ == true)
+		type_ = Type::ASSIGNED_SL;
+	else
+		ErrorMessage("(T,P,X,m) or (T,P,X,sl) must be defined as constant variables");
 
 	// Read space-temperature profile
+	std::cout << " * Reading dataGroup section (distance)..." << std::endl;
 	ReadNonConstantValueFromXML(ptree_, "distance", x_profile_values_, x_profile_units_);
+	std::cout << " * Reading dataGroup section (temperature)..." << std::endl;
 	ReadNonConstantValueFromXML(ptree_, "temperature", t_profile_values_, t_profile_units_);
 
 	// Recognize if the temperature profile is fixed or not
@@ -85,12 +93,19 @@ Respecth2OpenSMOKEpp_BurnerStabilizedFlameSpeciation::Respecth2OpenSMOKEpp_Burne
 
 void Respecth2OpenSMOKEpp_BurnerStabilizedFlameSpeciation::WriteSimulationData(std::ofstream& fOut)
 {
+	std::cout << "   - simulation data" << std::endl;
+
 	fOut << "Dictionary PremixedLaminarFlame1D" << std::endl;
 	fOut << "{" << std::endl;
 	fOut << "        @KineticsFolder          " << kinetics_folder_.string() << ";" << std::endl;
 	fOut << "        @Type                    BurnerStabilized;" << std::endl;
 	fOut << "        @InletStream             inlet-stream;" << std::endl;
-	fOut << "        @InletMassFlux           " << m_values_[0] << " " << m_units_ << ";" << std::endl;
+	
+	if (type_ == Type::ASSIGNED_M)
+		fOut << "        @InletMassFlux           " << m_values_[0] << " " << m_units_ << ";" << std::endl;
+	else if (type_ == Type::ASSIGNED_SL)
+		fOut << "        @InletVelocity           " << sl_values_[0] << " " << sl_units_ << ";" << std::endl;
+
 	fOut << "        @Grid                    grid;" << std::endl;
 	fOut << "        @Output                  " << output_folder_.string() << ";" << std::endl;
 	fOut << "        @UseDaeSolver            true;" << std::endl;

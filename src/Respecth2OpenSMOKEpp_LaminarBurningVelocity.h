@@ -51,8 +51,9 @@ public:
 
 private:
 
-	enum class ApparatusKind { FLAME }									apparatus_kind_;
-	enum class Type { VARIABLE_T, VARIABLE_P, VARIABLE_COMPOSITION }	type_;
+	enum class ApparatusKind { FLAME }	apparatus_kind_;
+	enum class Type {	VARIABLE_T, VARIABLE_P, VARIABLE_COMPOSITION,
+						VARIABLE_T_COMPOSITION, VARIABLE_P_COMPOSITION }	type_;
 
 	std::vector<std::string> list_inlet_dicts_;
 

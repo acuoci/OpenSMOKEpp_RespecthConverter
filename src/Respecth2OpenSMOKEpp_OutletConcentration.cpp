@@ -53,31 +53,44 @@ Respecth2OpenSMOKEpp_OutletConcentration::Respecth2OpenSMOKEpp_OutletConcentrati
 	else ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: flow reactor | shock tube");
 
 	// Read constant values
+	std::cout << " * Reading commonProperties section..." << std::endl;
 	ReadConstantValueFromXML();
 
 	// Check constant values
+	std::cout << " * Checking input data from commonProperties section..." << std::endl;
 	if (constant_temperature_ == false && constant_pressure_ == true && constant_composition_== true && constant_residencetime_ == false)
 		type_ = Type::VARIABLE_T_TAU;
 	else if (constant_temperature_ == true || constant_pressure_ == false || constant_composition_ == true && constant_residencetime_ == false)
 		type_ = Type::VARIABLE_P_TAU;
 	else
-		ErrorMessage("Experiment type: " + experiment_type_ + ". Possible combinations of constant variables: (P,X) | (T,X)");
+		ErrorMessage("Possible combinations of constant variables: (P,X) | (T,X)");
 
 	// Read residence times
 	if (constant_residencetime_ == false)
+	{
+		std::cout << " * Reading dataGroup section (residence time)..." << std::endl;
 		ReadNonConstantValueFromXML(ptree_, "residence time", tau_values_, tau_units_);
+	}
 
 	// Read temperatures
 	if (constant_temperature_ == false)
+	{
+		std::cout << " * Reading dataGroup section (temperature)..." << std::endl;
 		ReadNonConstantValueFromXML(ptree_, "temperature", t_values_, t_units_);
+	}
 
 	// Read pressures
 	if (constant_pressure_ == false)
+	{
+		std::cout << " * Reading dataGroup section (pressure)..." << std::endl;
 		ReadNonConstantValueFromXML(ptree_, "pressure", p_values_, p_units_);
+	}
 }
 
 void Respecth2OpenSMOKEpp_OutletConcentration::WriteSimulationData(std::ofstream& fOut)
 {
+	std::cout << "   - simulation data" << std::endl;
+
 	if (apparatus_kind_ == ApparatusKind::FLOW_REACTOR)
 	{
 		fOut << "Dictionary PlugFlowReactor" << std::endl;
