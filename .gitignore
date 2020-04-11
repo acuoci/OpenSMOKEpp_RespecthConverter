@@ -13,6 +13,8 @@ BzzFile.txt
 #Examples
 #########
 examples/ulb/
+examples_*/
+output-remote/
 
 #Autotools
 #########################
@@ -45,6 +47,8 @@ projects/Linux/stamp-h?
 *.unsuccessfulbuild
 *.pdb
 *.manifest
+*.iobj
+*.ipdb
 
 #OpenFOAM
 #########
