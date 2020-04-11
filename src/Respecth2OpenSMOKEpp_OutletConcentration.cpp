@@ -128,5 +128,5 @@ void Respecth2OpenSMOKEpp_OutletConcentration::WriteSimulationData(std::ofstream
 	if (type_ == Type::VARIABLE_P_TAU)
 		WriteParametricAnalysisOnASCII("parametric-analysis", "residence-time-pressure", fOut, tau_values_, tau_units_, p_values_, p_units_);
 
-	WriteOutputOptionsOnASCII("output-options", fOut, 5000, output_folder_);
+	WriteOutputOptionsOnASCII("output-options", fOut, true, 1000, true, 5000, output_folder_simulation_);
 }

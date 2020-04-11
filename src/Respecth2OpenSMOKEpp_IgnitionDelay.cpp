@@ -150,7 +150,7 @@ void Respecth2OpenSMOKEpp_IgnitionDelay::WriteSimulationData(std::ofstream& fOut
 		WriteParametricAnalysisOnASCII("parametric-analysis", "temperature-pressure", fOut, list_of_files);
 	}
 
-	WriteOutputOptionsOnASCII("output-options", fOut, 5, output_folder_);
+	WriteOutputOptionsOnASCII("output-options", fOut, true, 1000, true, 5, output_folder_simulation_);
 }
 
 void Respecth2OpenSMOKEpp_IgnitionDelay::WriteAdditionalFiles()

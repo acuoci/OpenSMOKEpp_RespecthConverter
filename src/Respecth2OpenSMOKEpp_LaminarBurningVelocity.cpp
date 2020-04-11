@@ -108,7 +108,7 @@ void Respecth2OpenSMOKEpp_LaminarBurningVelocity::WriteSimulationData(std::ofstr
 
 	fOut << "        @InletVelocity       50 cm/s;" << std::endl;
 	fOut << "        @Grid                grid;" << std::endl;
-	fOut << "        @Output              " << output_folder_.string() << ";" << std::endl;
+	fOut << "        @Output              " << output_folder_simulation_.string() << ";" << std::endl;
 	fOut << "        @UseDaeSolver        true;" << std::endl;
 	fOut << "}" << std::endl;
 	fOut << std::endl;

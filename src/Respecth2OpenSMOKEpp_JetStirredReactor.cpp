@@ -120,6 +120,7 @@ void Respecth2OpenSMOKEpp_JetStirredReactor::WriteSimulationData(std::ofstream& 
 	fOut << "        @InletStatus         inlet-status;" << std::endl;
 	fOut << "        @ResidenceTime       " << tau_values_[0] << " " << tau_units_ << " ;" << std::endl;
 	fOut << "        @Volume              " << v_values_[0] << " " << v_units_ << " ;" << std::endl;
+	fOut << "        @EndTime             " << "5" << " " << "s" << " ;" << std::endl;
 	fOut << "        @Options             output-options;" << std::endl;
 	fOut << "        @ParametricAnalysis  parametric-analysis;" << std::endl;
 	fOut << "}" << std::endl;
@@ -136,5 +137,5 @@ void Respecth2OpenSMOKEpp_JetStirredReactor::WriteSimulationData(std::ofstream& 
 	else if (type_ == Type::VARIABLE_TAU)
 		WriteParametricAnalysisOnASCII("parametric-analysis", "time", fOut, tau_values_, tau_units_);
 
-	WriteOutputOptionsOnASCII("output-options", fOut, 5000, output_folder_);
+	WriteOutputOptionsOnASCII("output-options", fOut, true, 1000, true, 5000, output_folder_simulation_);
 } 

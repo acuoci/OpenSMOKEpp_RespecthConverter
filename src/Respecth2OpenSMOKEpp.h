@@ -71,6 +71,7 @@ protected:
 
 	boost::filesystem::path file_name_xml_;
 	boost::filesystem::path output_folder_;
+	boost::filesystem::path output_folder_simulation_;
 
 	boost::property_tree::ptree ptree_;
 

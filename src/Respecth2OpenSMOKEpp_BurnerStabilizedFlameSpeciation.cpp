@@ -107,7 +107,7 @@ void Respecth2OpenSMOKEpp_BurnerStabilizedFlameSpeciation::WriteSimulationData(s
 		fOut << "        @InletVelocity           " << sl_values_[0] << " " << sl_units_ << ";" << std::endl;
 
 	fOut << "        @Grid                    grid;" << std::endl;
-	fOut << "        @Output                  " << output_folder_.string() << ";" << std::endl;
+	fOut << "        @Output                  " << output_folder_simulation_.string() << ";" << std::endl;
 	fOut << "        @UseDaeSolver            true;" << std::endl;
 	if (fixed_temperature_profile_ == true)
 		fOut << "        @FixedTemperatureProfile T-Profile;" << std::endl;

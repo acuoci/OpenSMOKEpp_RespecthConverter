@@ -62,7 +62,7 @@ void ReadProfileFromXML(boost::property_tree::ptree& ptree, const std::string na
 
 void WriteMixStatusOnASCII(const std::string name, std::ofstream& fOut, const double t, const std::string t_units, const double p, const std::string p_units, const Composition& composition);
 
-void WriteOutputOptionsOnASCII(const std::string name, std::ofstream& fOut, const int steps_file, const boost::filesystem::path& output_folder);
+void WriteOutputOptionsOnASCII(const std::string name, std::ofstream& fOut, const bool verbose_video, const int steps_video, const bool verbose_file, const int steps_file, const boost::filesystem::path& output_folder_simulation);
 
 void WriteODEParametersOnASCII(const std::string name, std::ofstream& fOut, const double abs_tol, const double rel_tol);
 

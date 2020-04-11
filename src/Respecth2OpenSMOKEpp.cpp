@@ -98,10 +98,13 @@ database_species_(database_species)
 		output_folder_ = output_folder / file_name_xml_.stem();
 		if (!boost::filesystem::exists(output_folder_))
 			boost::filesystem::create_directory(output_folder_);
+
+		output_folder_simulation_ = output_folder_;
 	}
 	else
 	{
 		output_folder_ = output_folder;
+		output_folder_simulation_ = output_folder / file_name_xml_.stem();
 	}
 }
 

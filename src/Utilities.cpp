@@ -232,17 +232,20 @@ void WriteMixStatusOnASCII(const std::string name, std::ofstream& fOut, const do
 	fOut << std::endl;
 }
 
-void WriteOutputOptionsOnASCII(const std::string name, std::ofstream& fOut, const int steps_file, const boost::filesystem::path& output_folder)
+void WriteOutputOptionsOnASCII(const std::string name, std::ofstream& fOut, const bool verbose_video, const int steps_video, const bool verbose_file, const int steps_file, const boost::filesystem::path& output_folder_simulation)
 {
 	std::cout << "   - output options" << std::endl;
 
+	std::string verbose_video_ = (verbose_video == true) ? "true" : "false";
+	std::string verbose_file_  = (verbose_file == true) ? "true" : "false";
+
 	fOut << "Dictionary " << name << std::endl;
 	fOut << "{" << std::endl;
-	fOut << "        @StepsVideo       1000;" << std::endl;
+	fOut << "        @StepsVideo       " << steps_video << ";" << std::endl;
 	fOut << "        @StepsFile        " << steps_file << ";" << std::endl;
-	fOut << "        @VerboseVideo     false;" << std::endl;
-	fOut << "        @VerboseASCIIFile true;" << std::endl;
-	fOut << "        @OutputFolder     " << output_folder.string() << ";" << std::endl;
+	fOut << "        @VerboseVideo     " << verbose_video_ << ";" << std::endl;
+	fOut << "        @VerboseASCIIFile " << verbose_file_ << ";" << std::endl;
+	fOut << "        @OutputFolder     " << output_folder_simulation.string() << ";" << std::endl;
 	fOut << "}" << std::endl;
 	fOut << std::endl;
 }

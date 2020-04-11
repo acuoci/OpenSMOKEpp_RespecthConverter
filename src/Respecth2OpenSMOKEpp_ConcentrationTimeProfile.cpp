@@ -111,5 +111,5 @@ void Respecth2OpenSMOKEpp_ConcentrationTimeProfile::WriteSimulationData(std::ofs
 
 	WriteMixStatusOnASCII("mix-status", fOut, t_values_[0], t_units_, p_values_[0], p_units_, initial_compositions_[0]);
 
-	WriteOutputOptionsOnASCII("output-options", fOut, 1, output_folder_);
+	WriteOutputOptionsOnASCII("output-options", fOut, true, 1000, true, 1, output_folder_simulation_);
 }
