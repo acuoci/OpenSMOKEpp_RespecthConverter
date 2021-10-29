@@ -46,6 +46,7 @@
 
 class Composition;
 class DatabaseSpecies;
+struct idtType;
 
 void FatalErrorMessage(const std::string message);
 
@@ -66,7 +67,7 @@ void WriteOutputOptionsOnASCII(const std::string name, std::ofstream& fOut, cons
 
 void WriteODEParametersOnASCII(const std::string name, std::ofstream& fOut, const double abs_tol, const double rel_tol);
 
-void WriteIgnitionDelayTimesOnASCII(const std::string name, std::ofstream& fOut);
+void WriteIgnitionDelayTimesOnASCII(const std::string name, std::ofstream& fOut, const bool is_RCM, const idtType idt);
 
 void WriteParametricAnalysisOnASCII(const std::string name, const std::string type, std::ofstream& fOut, const std::vector<double> values, const std::string units);
 
@@ -81,3 +82,11 @@ void WriteProfileOnCVS(const boost::filesystem::path file_name,
 	const std::string name2, const std::vector<double> values2, const std::string units2);
 
 void ForceMonotonicProfiles(std::vector<double>& x, std::vector<double>& y);
+
+struct idtType
+{
+	std::string target_;
+	std::string type_;
+	double amount_;
+	std::string units_;
+};

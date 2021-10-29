@@ -53,20 +53,26 @@ Respecth2OpenSMOKEpp_IgnitionDelay::Respecth2OpenSMOKEpp_IgnitionDelay
 	else if (apparatus_kind == "rapid compression machine")	apparatus_kind_ = ApparatusKind::RCM;
 	else ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: flow reactor | shock tube | rapid compression machine");
 
+	// Recognize the ignition type
+	std::cout << " * Reading ignition delay time type section..." << std::endl;
+	ReadIdtTypeFromXML();
+
 	// Read constant values
 	std::cout << " * Reading commonProperties section..." << std::endl;
 	ReadConstantValueFromXML();
 
-	// Check constant values
+	// Check constant values 
 	std::cout << " * Checking input data from commonProperties section..." << std::endl;
 	if (constant_temperature_ == false && constant_pressure_ == true && constant_composition_ == true)
 		type_ = Type::VARIABLE_T;
-	else if (constant_temperature_ == true || constant_pressure_ == false || constant_composition_ == true)
+	if (constant_temperature_ == true && constant_pressure_ == false && constant_composition_ == true)
 		type_ = Type::VARIABLE_P;
-	else if (constant_temperature_ == false || constant_pressure_ == false || constant_composition_ == true)
+	if (constant_temperature_ == false && constant_pressure_ == false && constant_composition_ == true)
 		type_ = Type::VARIABLE_TP;
-	else
-		ErrorMessage("Possible combinations of constant variables: (P,X) | (T,X) | (X)");
+	if (constant_composition_ == false)
+		ErrorMessage("Only constant composition is allowed");
+	if (constant_temperature_ == true && constant_pressure_ == true)
+		ErrorMessage("Pressure and Temperature cannot be constant at the same time");
 
 	// Read temperatures
 	if (constant_temperature_ == false)
@@ -126,7 +132,10 @@ void Respecth2OpenSMOKEpp_IgnitionDelay::WriteSimulationData(std::ofstream& fOut
 
 	WriteODEParametersOnASCII("ode-parameters", fOut, 1e-14, 1e-7);
 
-	WriteIgnitionDelayTimesOnASCII("ignition-delay-times", fOut);
+	if (apparatus_kind_ == ApparatusKind::RCM)
+		WriteIgnitionDelayTimesOnASCII("ignition-delay-times", fOut, true, idt_);
+	else
+		WriteIgnitionDelayTimesOnASCII("ignition-delay-times", fOut, false, idt_);
 
 	if (v_history_units_.size() == 0)
 	{

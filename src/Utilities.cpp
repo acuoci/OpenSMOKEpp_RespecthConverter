@@ -306,13 +306,66 @@ void WriteParametricAnalysisOnASCII(const std::string name, const std::string ty
 	fOut << std::endl;
 }
 
-void WriteIgnitionDelayTimesOnASCII(const std::string name, std::ofstream& fOut)
+void WriteIgnitionDelayTimesOnASCII(const std::string name, std::ofstream& fOut, const bool is_RCM, const idtType idt)
 {
 	fOut << "Dictionary " << name << std::endl;
 	fOut << "{" << std::endl;
-		fOut << "        @Temperature                       true;" << std::endl;
-		fOut << "        @Pressure                          true;" << std::endl;
-		fOut << "        @RapidCompressionMachine           true;" << std::endl;
+
+		if (idt.target_ == "T")
+		{
+			fOut << "        @Temperature                       true;" << std::endl;
+			fOut << "        @Pressure                          false;" << std::endl;
+		}
+		else if (idt.target_ == "p")
+		{
+			fOut << "        @Temperature                       false;" << std::endl;
+			fOut << "        @Pressure                          true;" << std::endl;
+		}
+		else 
+		{
+			fOut << "        @Temperature                       false;" << std::endl;
+			fOut << "        @Pressure                          false;" << std::endl;
+			if (idt.type_ == "max")
+			{
+				fOut << "        @Species                               " << idt.target_ << ";" << std::endl;
+			}
+			if (idt.type_ == "d/dt max")
+			{
+				fOut << "        @Species                               " << idt.target_ << ";" << std::endl;
+				fOut << "        @SpeciesSlope                          true;" << std::endl;
+			}
+			else if (idt.type_ == "baseline max intercept from d/dt")
+			{
+				fOut << "        @Species                               " << idt.target_ << ";" << std::endl;
+				fOut << "        @SpeciesMaxIntercept                   true;" << std::endl;
+			}
+			else if (idt.type_ == "baseline min intercept from d/dt")
+			{
+				fOut << "        @Species                               " << idt.target_ << ";" << std::endl;
+				fOut << "        @SpeciesMinIntercept                   true;" << std::endl;
+			}
+			else if (idt.type_ == "concentration")
+			{
+				if (idt.units_ == "mole fraction")
+					fOut << "        @TargetMoleFractions                          "
+						 << idt.target_ << " " << idt.amount_ << ";" << std::endl;
+				else if (idt.units_ == "mol/cm3")
+					fOut << "        @TargetConcentrations                          "
+						 << idt.target_ << " " << idt.amount_ << " " << idt.units_ << ";" << std::endl;
+			}
+			else if (idt.type_ == "relative concentration")
+			{
+				if (idt.units_ == "mole fraction")
+					fOut << "        @TargetRelativeMoleFractions                          "
+						 << idt.target_ << " " << idt.amount_ << ";" << std::endl;
+				else if (idt.units_ == "mol/cm3")
+					fOut << "        @TargetRelativeConcentrations                          "
+						 << idt.target_ << " " << idt.amount_ << ";" << std::endl;
+			}
+		}
+
+		if (is_RCM == true)
+			fOut << "        @RapidCompressionMachine           true;" << std::endl;
 		fOut << "        @FilterWidth                       0.1 ms;" << std::endl;
 		fOut << "        @RegularizationTimeInterval        2.0 ms;" << std::endl;
 		fOut << "        @TemperatureDerivativeThreshold    1.0 K/ms;" << std::endl;

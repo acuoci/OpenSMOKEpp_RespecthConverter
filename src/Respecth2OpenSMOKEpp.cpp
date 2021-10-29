@@ -35,6 +35,7 @@
 \*-----------------------------------------------------------------------*/
 
 #include "Respecth2OpenSMOKEpp.h"
+#include <boost/algorithm/string/replace.hpp>
 
 Respecth2OpenSMOKEpp::Respecth2OpenSMOKEpp(	boost::filesystem::path file_name, 
 											const boost::filesystem::path kinetics_folder,
@@ -155,6 +156,107 @@ void Respecth2OpenSMOKEpp::ErrorMessage(const std::string message)
 	std::cout << "Press enter to exit... ";
 	getchar();
 	exit(-1);
+}
+
+void Respecth2OpenSMOKEpp::ReadIdtTypeFromXML()
+{
+	boost::property_tree::ptree subtree_ignition_type = ptree_.get_child("experiment.ignitionType");
+	idt_.target_ = subtree_ignition_type.get<std::string>("<xmlattr>.target");
+	idt_.type_ = subtree_ignition_type.get<std::string>("<xmlattr>.type");
+
+	// Analysis of type
+	if (idt_.type_ == "max")
+	{
+		idt_.amount_ = 0.;
+		idt_.units_ = "unitless";
+	}
+	else if (idt_.type_ == "d/dt max")
+	{
+		idt_.amount_ = 0.;
+		idt_.units_ = "unitless";
+	}
+	else if (idt_.type_ == "baseline max intercept from d/dt")
+	{
+		idt_.amount_ = 0.;
+		idt_.units_ = "unitless";
+	}
+	else if (idt_.type_ == "baseline min intercept from d/dt")
+	{
+		idt_.amount_ = 0.;
+		idt_.units_ = "unitless";
+	}
+	else if (idt_.type_ == "concentration")
+	{
+		idt_.amount_ = subtree_ignition_type.get<double>("<xmlattr>.amount");
+		idt_.units_ = subtree_ignition_type.get<std::string>("<xmlattr>.units");
+	}
+	else if (idt_.type_ == "relative concentration")
+	{
+		idt_.amount_ = subtree_ignition_type.get<double>("<xmlattr>.amount");
+		idt_.units_ = subtree_ignition_type.get<std::string>("<xmlattr>.units");
+	}
+	else
+	{
+		std::string message = "Error in parsing the ignitionType section in XML file: type is not recognized";
+		ErrorMessage(message);
+	}
+
+	// Conversion of units
+	if (idt_.type_ == "concentration" || idt_.type_ == "relative concentration")
+	{
+		if (idt_.units_ == "mole fraction")
+		{
+			// do nothing 
+		}
+		else if (idt_.units_ == "percent")
+		{
+			idt_.amount_ /= 100.;
+			idt_.units_ = "mole fraction";
+		}
+		else if (idt_.units_ == "ppm")
+		{
+			idt_.amount_ *= 1.e6;
+			idt_.units_ = "mole fraction";
+		}
+		else if (idt_.units_ == "ppb")
+		{
+			idt_.amount_ *= 1.e9;
+			idt_.units_ = "mole fraction";
+		}
+		else if (idt_.units_ == "mol/cm3")
+		{
+			// do nothing
+		}
+		else if (idt_.units_ == "unitless")
+		{
+			// do nothing
+		}
+		else
+		{
+			std::string message = "Error in parsing the ignitionType section in XML file: Unknown units for composition: " + idt_.units_ + ". Available units: mole fraction | percent | ppm | ppb | mol/cm3'";
+			ErrorMessage(message);
+		}
+	}
+	
+	// Analysis of target
+	if (idt_.target_ == "T" || idt_.target_ == "p")
+	{
+		if (idt_.type_ == "concentration" || idt_.type_ == "relative concentration")
+		{
+			std::string message = "Error in parsing the ignitionType section in XML file: target 'T' or 'p' is incompatible with type 'concentration' or 'relative concentration'";
+			ErrorMessage(message);
+		}
+	}
+	else
+	{
+		// Recognize the species name
+		idt_.target_.erase(remove(idt_.target_.begin(), idt_.target_.end(), ';'), idt_.target_.end());
+		idt_.target_.erase(remove(idt_.target_.begin(), idt_.target_.end(), '*'), idt_.target_.end());
+		boost::algorithm::replace_all(idt_.target_, "EX", "");
+	}
+
+	// Summary
+	std::cout << idt_.target_ << " " << idt_.type_ << " " << idt_.amount_ << " " << idt_.units_ << std::endl;
 }
 
 void Respecth2OpenSMOKEpp::ReadConstantValueFromXML()

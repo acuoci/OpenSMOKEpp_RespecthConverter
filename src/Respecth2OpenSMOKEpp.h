@@ -63,6 +63,8 @@ public:
 
 	void ReadConstantValueFromXML();
 
+	void ReadIdtTypeFromXML();
+
 	void WriteOnASCIIFile(boost::filesystem::path file_name);
 
 	void ErrorMessage(const std::string message);
@@ -113,6 +115,8 @@ protected:
 
 	std::vector<Composition> initial_compositions_;
 	bool constant_composition_;
+
+	idtType idt_;
 
 protected:
 
