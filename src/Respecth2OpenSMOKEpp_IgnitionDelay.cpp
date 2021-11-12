@@ -123,7 +123,7 @@ void Respecth2OpenSMOKEpp_IgnitionDelay::WriteSimulationData(std::ofstream& fOut
 	fOut << "        @IgnitionDelayTimes      ignition-delay-times;" << std::endl;
 	
 	if (dpdt_values_.size() != 0)
-		fOut << "        //@PressureCoefficient     " << dpdt_values_[0]*p_values_[0] << " " << p_units_ << "/" << dpdt_units_ << ";" << std::endl;
+		fOut << "        //@PressureCoefficient     " << dpdt_values_[0] << dpdt_units_ << ";" << std::endl;
 
 	fOut << "}" << std::endl;
 	fOut << std::endl;
