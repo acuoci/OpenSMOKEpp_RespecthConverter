@@ -337,12 +337,12 @@ void WriteIgnitionDelayTimesOnASCII(const std::string name, std::ofstream& fOut,
 			else if (idt.type_ == "baseline max intercept from d/dt")
 			{
 				fOut << "        @Species                               " << idt.target_ << ";" << std::endl;
-				fOut << "        @SpeciesMaxIntercept                   true;" << std::endl;
+				fOut << "        @SpeciesMaxIntercept                   " << idt.target_ << ";" << std::endl;
 			}
 			else if (idt.type_ == "baseline min intercept from d/dt")
 			{
 				fOut << "        @Species                               " << idt.target_ << ";" << std::endl;
-				fOut << "        @SpeciesMinIntercept                   true;" << std::endl;
+				fOut << "        @SpeciesMinIntercept                   " << idt.target_ << ";" << std::endl;
 			}
 			else if (idt.type_ == "concentration")
 			{
