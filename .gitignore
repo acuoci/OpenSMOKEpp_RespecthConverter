@@ -302,3 +302,7 @@ projects/MSVS2015/OpenSMOKEpp_BatchReactor/BzzFile.txt
 projects/
 
 exe/
+
+src/Report.h
+
+src/Report.cpp
