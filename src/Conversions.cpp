@@ -120,11 +120,13 @@ void CheckAndConvertUnits(const std::string name, double& value, std::string& un
 
 		if (units == "ms-1")
 		{
-			units = "1/ms";
+			units = "1/ms";  
+			//units = "ms"; // wrap veloce per far tornare l'unità di pressure rise coeficient
 		}
 		else if (units == "s-1")
 		{
-			units = "1/s";
+			units = "1/s"; 
+			//units = "s"; // wrap veloce per far tornare l'unità di pressure rise coeficient
 		}
 	}
 	else if (name == "distance")
