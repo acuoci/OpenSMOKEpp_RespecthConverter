@@ -154,7 +154,7 @@ void Respecth2OpenSMOKEpp_IgnitionDelay::WriteSimulationData(std::ofstream& fOut
 		for (unsigned int i = 0; i < list_of_files.size(); i++)
 		{
 			list_of_files[i] = file_name_xml_.stem();
-			list_of_files[i] += ".";  list_of_files[i] += std::to_string(i + 1); list_of_files[i] += ".cvs";
+			list_of_files[i] += ".";  list_of_files[i] += std::to_string(i + 1); list_of_files[i] += ".csv";
 		}
 		WriteParametricAnalysisOnASCII("parametric-analysis", "temperature-pressure", fOut, list_of_files);
 	}
@@ -170,19 +170,19 @@ void Respecth2OpenSMOKEpp_IgnitionDelay::WriteAdditionalFiles()
 
 		for (unsigned int i = 0; i < v_history_units_.size(); i++)
 		{
-			boost::filesystem::path file_name_cvs = output_folder_ / file_name_xml_.stem();
-			file_name_cvs += ".";  file_name_cvs += std::to_string(i + 1); file_name_cvs += ".cvs";
+			boost::filesystem::path file_name_csv = output_folder_ / file_name_xml_.stem();
+			file_name_csv += ".";  file_name_csv += std::to_string(i + 1); file_name_csv += ".csv";
 			
 			if (type_ == Type::VARIABLE_TP)
-				WriteProfileOnCVS(file_name_cvs,
+				WriteProfileOnCSV(file_name_csv,
 					"temperature", t_values_[i], t_units_, "pressure", p_values_[i], p_units_,
 					"time", tau_history_values_[i], tau_history_units_[i], "volume", v_history_values_[i], v_history_units_[i]);
 			else if(type_ == Type::VARIABLE_T)
-				WriteProfileOnCVS(file_name_cvs,
+				WriteProfileOnCSV(file_name_csv,
 					"temperature", t_values_[i], t_units_, "pressure", p_values_[0], p_units_,
 					"time", tau_history_values_[i], tau_history_units_[i], "volume", v_history_values_[i], v_history_units_[i]);
 			else if (type_ == Type::VARIABLE_P)
-				WriteProfileOnCVS(file_name_cvs,
+				WriteProfileOnCSV(file_name_csv,
 					"temperature", t_values_[0], t_units_, "pressure", p_values_[i], p_units_,
 					"time", tau_history_values_[i], tau_history_units_[i], "volume", v_history_values_[i], v_history_units_[i]);
 		}

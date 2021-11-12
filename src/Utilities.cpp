@@ -374,7 +374,7 @@ void WriteIgnitionDelayTimesOnASCII(const std::string name, std::ofstream& fOut,
 	fOut << std::endl;
 }
 
-void WriteProfileOnCVS(const boost::filesystem::path file_name,
+void WriteProfileOnCSV(const boost::filesystem::path file_name,
 	const std::string variable1, const double value1, const std::string unit1,
 	const std::string variable2, const double value2, const std::string unit2,
 	const std::string name1, const std::vector<double> values1, const std::string units1,
