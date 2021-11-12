@@ -75,7 +75,7 @@ void WriteParametricAnalysisOnASCII(const std::string name, const std::string ty
 
 void WriteParametricAnalysisOnASCII(const std::string name, const std::string type, std::ofstream& fOut, const std::vector<boost::filesystem::path> file_names);
 
-void WriteProfileOnCVS(const boost::filesystem::path file_name,
+void WriteProfileOnCSV(const boost::filesystem::path file_name,
 	const std::string variable1, const double value1, const std::string unit1,
 	const std::string variable2, const double value2, const std::string unit2,
 	const std::string name1, const std::vector<double> values1, const std::string units1,
