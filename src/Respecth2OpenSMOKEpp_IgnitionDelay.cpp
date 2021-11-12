@@ -110,7 +110,7 @@ void Respecth2OpenSMOKEpp_IgnitionDelay::WriteSimulationData(std::ofstream& fOut
 	fOut << "Dictionary BatchReactor" << std::endl;
 	fOut << "{" << std::endl;
 	fOut << "        @KineticsFolder          " << kinetics_folder_.string() << ";" << std::endl;
-	if (v_history_values_.size() != 0)
+	if (v_history_values_.size() != 0 || dpdt_values_.size() != 0)
 		fOut << "        @Type                    NonIsothermal-UserDefinedVolume;" << std::endl;
 	else
 		fOut << "        @Type                    NonIsothermal-ConstantVolume;" << std::endl;
