@@ -306,3 +306,7 @@ exe/
 src/Report.h
 
 src/Report.cpp
+
+project/
+
+RespecthToOpenSMOKE.sln
