@@ -110,7 +110,7 @@ void Respecth2OpenSMOKEpp_IgnitionDelay::WriteSimulationData(std::ofstream& fOut
 	fOut << "Dictionary BatchReactor" << std::endl;
 	fOut << "{" << std::endl;
 	fOut << "        @KineticsFolder          " << kinetics_folder_.string() << ";" << std::endl;
-	if (v_history_values_.size() != 0 ) // per ora non consideriamo PrssureCoefficient andrebbe messo così|| dpdt_values_.size() != 0
+	if (v_history_values_.size() != 0 ) // Pressure Coefficient ignored due to inconsistency with OpenSMOKE++ format "|| dpdt_values_.size() != 0"
 		fOut << "        @Type                    NonIsothermal-UserDefinedVolume;" << std::endl;
 	else
 		fOut << "        @Type                    NonIsothermal-ConstantVolume;" << std::endl;
@@ -124,6 +124,7 @@ void Respecth2OpenSMOKEpp_IgnitionDelay::WriteSimulationData(std::ofstream& fOut
 	
 	if (dpdt_values_.size() != 0)
 		fOut << "        //@PressureCoefficient     " << dpdt_values_[0] << dpdt_units_ << ";" << std::endl;
+	    std::cout << "Pressure Coefficient ignored due to inconsistency with OpenSMOKE++ format" << std::endl;
 
 	fOut << "}" << std::endl;
 	fOut << std::endl;
