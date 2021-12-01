@@ -38,6 +38,7 @@
 #include "DatabaseSpecies.h"
 #include <algorithm>
 #include <iterator>
+#include <cmath>
 
 void Composition::ImportFromXMLTree(boost::property_tree::ptree& ptree)
 {
