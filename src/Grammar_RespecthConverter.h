@@ -75,6 +75,10 @@ namespace OpenSMOKE
 				OpenSMOKE::SINGLE_BOOL,
 				"If true, the names of species are treated as case sensitive (default: false)",
 				false));
+			AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@WriteReportFile",
+				OpenSMOKE::SINGLE_BOOL,
+				"If true, the report file containing the status of the errors during the conversion of the xml is written (default: false)",
+				false));
 		}
 	};
 }

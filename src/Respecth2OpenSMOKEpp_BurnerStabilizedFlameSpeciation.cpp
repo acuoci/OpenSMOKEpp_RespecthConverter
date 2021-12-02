@@ -49,12 +49,13 @@ Respecth2OpenSMOKEpp_BurnerStabilizedFlameSpeciation::Respecth2OpenSMOKEpp_Burne
 	// Recognize the apparatus kind
 	const std::string apparatus_kind = ptree_.get<std::string>("experiment.apparatus.kind", "unspecified");
 	if (apparatus_kind == "flame")	apparatus_kind_ = ApparatusKind::FLAME;
-	else ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: flame");
-
+	else 
+		ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: flame");
 	// Recognize the operation mode
 	const std::string apparatus_mode = ptree_.get<std::string>("experiment.apparatus.kind.mode", "burner-stabilized");
 	if (apparatus_mode == "burner-stabilized")	apparatus_mode_ = ApparatusMode::BURNER_STABILIZED;
-	else ErrorMessage("Unknown mode: " + apparatus_mode + ". Available: burner-stabilized");
+	else 
+		ErrorMessage("Unknown mode: " + apparatus_mode + ". Available: burner-stabilized");
 
 	// Read constant values
 	std::cout << " * Reading commonProperties section..." << std::endl;

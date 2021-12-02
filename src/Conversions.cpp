@@ -51,7 +51,6 @@ void CheckAndConvertUnits(const std::string name, double& value, std::string& un
 	{
 		if (units != "atm" && units != "bar" && units != "torr" && units != "Torr" && units != "Pa" && units != "kPa" && units != "MPa" && units != "mbar")
 			ConversionErrorMessage("Unknown pressure units: " + units + ". Available units: atm | bar | mbar | torr | Torr | Pa | kPa | MPa");
-
 		if (units == "torr" || units == "Torr")
 		{
 			value /= 760.;
@@ -77,7 +76,6 @@ void CheckAndConvertUnits(const std::string name, double& value, std::string& un
 	{
 		if (units != "s" && units != "ms" && units != "us" && units != "ns" && units != "min")
 			ConversionErrorMessage("Unknown time units: " + units + ". Available units: s | ms | us | ns | min");
-
 		if (units == "ns")
 		{
 			value /= 1.e6;
@@ -93,7 +91,6 @@ void CheckAndConvertUnits(const std::string name, double& value, std::string& un
 	{
 		if (units != "m3" && units != "cm3" && units != "mm3" && units != "dm3" && units != "L")
 			ConversionErrorMessage("Unknown volume units: " + units + ". Available units: m3 | dm3 | cm3 | mm3 | L");
-
 		if (units == "L")
 		{
 			units = "dm3";
@@ -103,7 +100,6 @@ void CheckAndConvertUnits(const std::string name, double& value, std::string& un
 	{
 		if (units != "g cm-2 s-1" && units != "kg m-2 s-1" && units != "us" && units != "ns" && units != "min")
 			ConversionErrorMessage("Unknown flow rate units: " + units + ". Available units: g cm-2 s-1 | kg m-2 s-1");
-
 		if (units == "g cm-2 s-1")
 		{
 			units = "g/cm2/s";
@@ -117,7 +113,6 @@ void CheckAndConvertUnits(const std::string name, double& value, std::string& un
 	{
 		if (units != "ms-1" && units != "s-1")
 			ConversionErrorMessage("Unknown pressure rise units: " + units + ". Available units: ms-1 | s-1");
-
 		if (units == "ms-1")
 		{
 			units = "1/ms";  

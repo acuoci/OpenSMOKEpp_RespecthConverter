@@ -50,7 +50,7 @@ Respecth2OpenSMOKEpp_LaminarBurningVelocity::Respecth2OpenSMOKEpp_LaminarBurning
 	const std::string apparatus_kind = ptree_.get<std::string>("experiment.apparatus.kind", "unspecified");
 	if (apparatus_kind == "flame")	apparatus_kind_ = ApparatusKind::FLAME;
 	else ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: flame");
-
+	
 	// Read constant values
 	std::cout << " * Reading commonProperties section..." << std::endl;
 	ReadConstantValueFromXML();
@@ -69,7 +69,6 @@ Respecth2OpenSMOKEpp_LaminarBurningVelocity::Respecth2OpenSMOKEpp_LaminarBurning
 		type_ = Type::VARIABLE_P_COMPOSITION;
 	else
 		ErrorMessage("Possible combinations of constant variables: (P,X) | (T,X) | (T,P) | (P) | (T)");
-
 	// Find pressures
 	if (constant_pressure_ == false)
 		ReadNonConstantValueFromXML(ptree_, "pressure", p_values_, p_units_);

@@ -165,7 +165,8 @@ void Composition::CheckForSpeciesNames(DatabaseSpecies& database_species)
 }
 
 void Composition::Convert2MoleFractionsAndCheckTheSum()
-{
+{	
+	
 	bool composition_in_concentration = false;
 
 	for (unsigned int i = 0; i < composition_.size(); i++)
@@ -218,8 +219,9 @@ void Composition::Convert2MoleFractionsAndCheckTheSum()
 	// Sum
 	const double sum_threshold = 1.0001e-4;
 	const double sum = std::accumulate(composition_.begin(), composition_.end(), 0.);
-	if (std::fabs(sum - 1.) > sum_threshold)
+	if (std::fabs(sum - 1.) > sum_threshold) {
 		ErrorMessage("Sum is not equal to 1: " + std::to_string(sum));
+	}
 
 	// Normalization
 	for (unsigned int i = 0; i < composition_.size(); i++)
@@ -242,4 +244,5 @@ void Composition::ErrorMessage(const std::string message)
 	std::cout << "Press enter to exit... ";
 	getchar();
 	exit(-1);
+	
 }

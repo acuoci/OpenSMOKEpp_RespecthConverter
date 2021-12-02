@@ -50,8 +50,8 @@ Respecth2OpenSMOKEpp_OutletConcentration::Respecth2OpenSMOKEpp_OutletConcentrati
 	const std::string apparatus_kind = ptree_.get<std::string>("experiment.apparatus.kind", "unspecified");
 	if (apparatus_kind == "flow reactor")		apparatus_kind_ = ApparatusKind::FLOW_REACTOR;
 	else if (apparatus_kind == "shock tube")	apparatus_kind_ = ApparatusKind::SHOCK_TUBE;
-	else ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: flow reactor | shock tube");
-
+	else 
+		ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: flow reactor | shock tube");
 	// Read constant values
 	std::cout << " * Reading commonProperties section..." << std::endl;
 	ReadConstantValueFromXML();

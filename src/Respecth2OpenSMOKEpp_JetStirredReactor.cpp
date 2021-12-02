@@ -39,7 +39,7 @@
 #include "Utilities.h"
 
 Respecth2OpenSMOKEpp_JetStirredReactor::Respecth2OpenSMOKEpp_JetStirredReactor
-(	const boost::filesystem::path file_name,
+(const boost::filesystem::path file_name,
 	const boost::filesystem::path kinetics_folder,
 	const boost::filesystem::path output_folder,
 	const std::vector<std::string> species_in_kinetic_mech,
@@ -51,14 +51,14 @@ Respecth2OpenSMOKEpp_JetStirredReactor::Respecth2OpenSMOKEpp_JetStirredReactor
 	const std::string apparatus_kind = ptree_.get<std::string>("experiment.apparatus.kind", "unspecified");
 	if (apparatus_kind == "stirred reactor")	apparatus_kind_ = ApparatusKind::STIRRED;
 	else ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: stirred reactor");
-
+	
 	// Read constant values
 	std::cout << " * Reading commonProperties section..." << std::endl;
 	ReadConstantValueFromXML();
 
 	// Check constant values
 	std::cout << " * Checking input data from commonProperties section..." << std::endl;
-	if (constant_temperature_ == false && constant_pressure_ == true && constant_composition_ == true && 
+	if (constant_temperature_ == false && constant_pressure_ == true && constant_composition_ == true &&
 		constant_residencetime_ == true && constant_volume_ == true)
 		type_ = Type::VARIABLE_T;
 	else if (constant_temperature_ == true && constant_pressure_ == false && constant_composition_ == true &&
@@ -74,8 +74,9 @@ Respecth2OpenSMOKEpp_JetStirredReactor::Respecth2OpenSMOKEpp_JetStirredReactor
 		constant_residencetime_ == true && constant_volume_ == true)
 		type_ = Type::VARIABLE_COMPOSITION;
 	else
+	{
 		ErrorMessage("Possible combinations of constant variables: (P,X,V,tau) | (T,X,V,tau) | (T,P,X,tau) | (T,P,X,V) | (T,P,V,tau)");
-
+	}
 	// Read non constant variables
 	std::cout << " * Reading dataGroup section..." << std::endl;
 	if (constant_temperature_ == false)
@@ -105,8 +106,9 @@ Respecth2OpenSMOKEpp_JetStirredReactor::Respecth2OpenSMOKEpp_JetStirredReactor
 	}
 
 	// TODO: Management of variable composition and residence time
-	if (type_ == Type::VARIABLE_COMPOSITION)
+	if (type_ == Type::VARIABLE_COMPOSITION) {
 		ErrorMessage("Combination of constant variable (P,T,V,tau) not yet implemented!");
+	}
 }
 
 void Respecth2OpenSMOKEpp_JetStirredReactor::WriteSimulationData(std::ofstream& fOut)

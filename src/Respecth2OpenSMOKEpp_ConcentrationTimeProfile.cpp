@@ -51,8 +51,8 @@ Respecth2OpenSMOKEpp_ConcentrationTimeProfile::Respecth2OpenSMOKEpp_Concentratio
 	if (apparatus_kind == "flow reactor")		apparatus_kind_ = ApparatusKind::FLOW_REACTOR;
 	else if (apparatus_kind == "shock tube")	apparatus_kind_ = ApparatusKind::SHOCK_TUBE;
 	else if (apparatus_kind == "batch")			apparatus_kind_ = ApparatusKind::BATCH;
-	else ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: flow reactor | shock tube | batch");
-
+	else 
+		ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: flow reactor | shock tube | batch");
 	// Read constant values
 	std::cout << " * Reading commonProperties section..." << std::endl;
 	ReadConstantValueFromXML();

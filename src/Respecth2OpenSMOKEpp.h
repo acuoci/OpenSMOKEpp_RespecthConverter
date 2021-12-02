@@ -137,7 +137,7 @@ protected:
 
 	// Bibliography link
 	Bibliography bibliography_;
-
+	
 	// Database of species names
 	DatabaseSpecies& database_species_;
 

@@ -37,6 +37,7 @@
 #include "Respecth2OpenSMOKEpp_IgnitionDelay.h"
 #include "Utilities.h"
 
+
 Respecth2OpenSMOKEpp_IgnitionDelay::Respecth2OpenSMOKEpp_IgnitionDelay
 (	const boost::filesystem::path file_name,
 	const boost::filesystem::path kinetics_folder,
@@ -51,8 +52,8 @@ Respecth2OpenSMOKEpp_IgnitionDelay::Respecth2OpenSMOKEpp_IgnitionDelay
 	if (apparatus_kind == "flow reactor")					apparatus_kind_ = ApparatusKind::FLOW_REACTOR;
 	else if (apparatus_kind == "shock tube")				apparatus_kind_ = ApparatusKind::SHOCK_TUBE;
 	else if (apparatus_kind == "rapid compression machine")	apparatus_kind_ = ApparatusKind::RCM;
-	else ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: flow reactor | shock tube | rapid compression machine");
-
+	else 
+		ErrorMessage("Unknown kind: " + apparatus_kind + ". Available: flow reactor | shock tube | rapid compression machine");
 	// Recognize the ignition type
 	std::cout << " * Reading ignition delay time type section..." << std::endl;
 	ReadIdtTypeFromXML();
@@ -73,7 +74,6 @@ Respecth2OpenSMOKEpp_IgnitionDelay::Respecth2OpenSMOKEpp_IgnitionDelay
 		ErrorMessage("Only constant composition is allowed");
 	if (constant_temperature_ == true && constant_pressure_ == true)
 		ErrorMessage("Pressure and Temperature cannot be constant at the same time");
-
 	// Read temperatures
 	if (constant_temperature_ == false)
 	{
@@ -124,8 +124,8 @@ void Respecth2OpenSMOKEpp_IgnitionDelay::WriteSimulationData(std::ofstream& fOut
 	
 	if (dpdt_values_.size() != 0)
 		fOut << "        //@PressureCoefficient     " << dpdt_values_[0] << dpdt_units_ << ";" << std::endl;
-	    std::cout << "Pressure Coefficient ignored due to inconsistency with OpenSMOKE++ format" << std::endl;
-
+	    //std::cout << " * Pressure Coefficient ignored due to inconsistency with OpenSMOKE++ format" << std::endl;
+		//report("GenericWarning", "Pressure Coefficient ignored due to inconsistency with OpenSMOKE++ format");
 	fOut << "}" << std::endl;
 	fOut << std::endl;
 
