@@ -83,6 +83,10 @@ void WriteProfileOnCSV(const boost::filesystem::path file_name,
 
 void ForceMonotonicProfiles(std::vector<double>& x, std::vector<double>& y);
 
+void WriteReportFileOnASCII(const boost::filesystem::path file_name, const boost::filesystem::path output_folder, 
+	std::vector<boost::filesystem::path> FilesList,
+	std::vector<std::string> ErrorsList);
+
 struct idtType
 {
 	std::string target_;

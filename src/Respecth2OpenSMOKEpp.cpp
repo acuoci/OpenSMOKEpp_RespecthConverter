@@ -147,6 +147,10 @@ void Respecth2OpenSMOKEpp::WriteMetaData(std::ofstream& fOut)
 	bibliography_.WriteOnASCII(fOut);
 }
 
+extern int ExitStatus;
+extern std::vector<std::string> ErrorList;
+extern int IndexExperimentWithError;
+
 void Respecth2OpenSMOKEpp::ErrorMessage(const std::string message)
 {
 	std::cout << "Fatal Error Message in conversion" << message << std::endl;
@@ -154,8 +158,12 @@ void Respecth2OpenSMOKEpp::ErrorMessage(const std::string message)
 	std::cout << " * Experiment type: " << experiment_type_ << std::endl;
 	std::cout << " * Error message:   " << message << std::endl;
 	std::cout << "Press enter to exit... ";
+	ErrorList[IndexExperimentWithError] = message;
 	getchar();
-	exit(-1);
+	if (ExitStatus == -1)
+		exit(-1);
+	else
+		;
 }
 
 void Respecth2OpenSMOKEpp::ReadIdtTypeFromXML()

@@ -408,3 +408,25 @@ void ForceMonotonicProfiles(std::vector<double>& x, std::vector<double>& y)
 		y.erase(y.begin() + *i);
 	}
 }
+
+void WriteReportFileOnASCII(const boost::filesystem::path file_name, const boost::filesystem::path output_folder,
+	std::vector<boost::filesystem::path> FilesList,
+	std::vector<std::string> ErrorsList) 
+{
+
+	std::ofstream fOut(file_name.string(), std::ios::out);
+	fOut.setf(std::ios::scientific);
+	int width = 30;
+
+	fOut << "FileName" << std::setw(width) << "Status" << std::setw(width) << "ErrorType" << std::endl;
+	fOut << "================================================================================" << std::endl;
+	for (unsigned int j = 0; j < FilesList.size(); j++) {
+		fOut << FilesList[j].filename().string() << std::setw(width);
+		if (ErrorsList[j] == "")
+			fOut << "Converted" << std::setw(width) << "None" << std::endl;
+		else
+			fOut << "Errors Occurred" << std::setw(width) << ErrorsList[j] << std::endl;
+	}
+
+	fOut.close();
+}

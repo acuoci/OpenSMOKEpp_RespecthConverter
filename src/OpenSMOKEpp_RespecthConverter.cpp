@@ -40,8 +40,10 @@
 // Grammar
 #include "Grammar_RespecthConverter.h"
 
+//Utilities
+#include "Utilities.h"
+
 // Converters
-#include "Report.h"
 #include "Respecth2OpenSMOKEpp_JetStirredReactor.h"
 #include "Respecth2OpenSMOKEpp_LaminarBurningVelocity.h"
 #include "Respecth2OpenSMOKEpp_BurnerStabilizedFlameSpeciation.h"
@@ -49,13 +51,18 @@
 #include "Respecth2OpenSMOKEpp_OutletConcentration.h"
 #include "Respecth2OpenSMOKEpp_IgnitionDelay.h"
 
+/* Definition of the exit status for the generation of the report file
+   Be aware to the use it could lead to some generations error */
+int ExitStatus = -1;
+std::vector<std::string> ErrorList= {};
+int IndexExperimentWithError;
+
 int main(int argc, char** argv)
 {
 	boost::filesystem::path executable_file = OpenSMOKE::GetExecutableFileName(argv);
 	boost::filesystem::path executable_folder = executable_file.parent_path();
 
 	OpenSMOKE::OpenSMOKE_logo("OpenSMOKEpp_RespecthConverter", "Alberto Cuoci (alberto.cuoci@polimi.it)");
-
 	std::string input_file_name_ = "input.dic";
 	std::string main_dictionary_name_ = "RespecthConverter";
 	unsigned int number_threads = 1;
@@ -145,7 +152,9 @@ int main(int argc, char** argv)
 	bool report_file = false;
 	if (dictionaries(main_dictionary_name_).CheckOption("@WriteReportFile") == true)
 		dictionaries(main_dictionary_name_).ReadBool("@WriteReportFile", report_file);
-		Report report;
+
+	if (report_file == true)
+		ExitStatus = 0;
 
 	bool case_sensitive = false;
 	if (dictionaries(main_dictionary_name_).CheckOption("@CaseSensitiveSpecies") == true)
@@ -207,8 +216,14 @@ int main(int argc, char** argv)
 		std::cout << j+1 << "/" << list_xml_files.size() << " " << apparatus_kind[j] << " " << experiment_type[j] << std::endl;
 	}
 
+	for (unsigned int j = 0; j < list_xml_files.size(); j++) {
+
+		ErrorList.push_back("");
+	}
+
 	for (unsigned int j = 0; j < list_xml_files.size(); j++)
 	{
+		IndexExperimentWithError = j;
 		std::cout << "Converting file: " << list_xml_files[j].filename().string() << std::endl;
 		std::cout << apparatus_kind[j] << " " << experiment_type[j] << std::endl;
 
@@ -216,49 +231,36 @@ int main(int argc, char** argv)
 		{
 			Respecth2OpenSMOKEpp_JetStirredReactor reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
 			reactor.WriteOnASCIIFile( (list_xml_files[j].filename().string() + ".dic" ) );
-			if (report_file == true)
-				report.WriterReport(list_xml_files[j].filename().string() + "_report.txt", path_output_folder_remote);
-				
 		}
 
 		else if (experiment_type[j] == "laminar burning velocity measurement")
 		{
 			Respecth2OpenSMOKEpp_LaminarBurningVelocity reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
 			reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
-			if (report_file == true)
-				report.WriterReport(list_xml_files[j].filename().string() + "_report.txt", path_output_folder_remote);
 		}
 
 		else if (experiment_type[j] == "burner stabilized flame speciation measurement")
 		{
 			Respecth2OpenSMOKEpp_BurnerStabilizedFlameSpeciation reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
 			reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
-			if (report_file == true)
-				report.WriterReport(list_xml_files[j].filename().string() + "_report.txt", path_output_folder_remote);
 		}
 
 		else if (experiment_type[j] == "concentration time profile measurement")
 		{
 			Respecth2OpenSMOKEpp_ConcentrationTimeProfile reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
 			reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
-			if (report_file == true)
-				report.WriterReport(list_xml_files[j].filename().string() + "_report.txt", path_output_folder_remote);
 		}
 
 		else if (experiment_type[j] == "outlet concentration measurement")
 		{
 			Respecth2OpenSMOKEpp_OutletConcentration reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
 			reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
-			if (report_file == true)
-				report.WriterReport(list_xml_files[j].filename().string() + "_report.txt", path_output_folder_remote);
 		}
 
 		else if (experiment_type[j] == "ignition delay measurement")
 		{
 			Respecth2OpenSMOKEpp_IgnitionDelay reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
 			reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
-			if (report_file == true)
-				report.WriterReport(list_xml_files[j].filename().string() + "_report.txt", path_output_folder_remote);
 		}
 
 		else
@@ -266,5 +268,8 @@ int main(int argc, char** argv)
 			OpenSMOKE::FatalErrorMessage("Unknown experiment type: " + experiment_type[j]);
 		}
 	}
+	
+	if (report_file == true)
+		WriteReportFileOnASCII("report.txt", path_output_folder_remote,list_xml_files, ErrorList);
 
 }

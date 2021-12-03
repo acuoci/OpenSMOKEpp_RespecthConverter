@@ -238,11 +238,19 @@ void Composition::WriteOnASCIIFile(std::ofstream& fOut) const
 	fOut << ";" << std::endl;
 }
 
+extern int ExitStatus;
+extern std::vector<std::string> ErrorList;
+extern int IndexExperimentWithError;
+
 void Composition::ErrorMessage(const std::string message)
 {
 	std::cout << "Fatal Error Message: " << message << std::endl;
 	std::cout << "Press enter to exit... ";
 	getchar();
-	exit(-1);
+	ErrorList[IndexExperimentWithError] = message;
+	if (ExitStatus == -1)
+		exit(-1);
+	else
+		;
 	
 }
