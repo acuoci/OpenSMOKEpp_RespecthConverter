@@ -153,17 +153,20 @@ extern int IndexExperimentWithError;
 
 void Respecth2OpenSMOKEpp::ErrorMessage(const std::string message)
 {
-	std::cout << "Fatal Error Message in conversion" << message << std::endl;
+	std::cout << "Fatal Error Message in conversion " << message << std::endl;
 	std::cout << " * Respecth file:   " << file_name_xml_.string() << std::endl;
 	std::cout << " * Experiment type: " << experiment_type_ << std::endl;
 	std::cout << " * Error message:   " << message << std::endl;
-	std::cout << "Press enter to exit... ";
 	ErrorList[IndexExperimentWithError] = message;
-	getchar();
-	if (ExitStatus == -1)
+	//getchar();
+	if (ExitStatus == -1){
+		std::cout << "Press enter to exit...";
 		exit(-1);
-	else
-		;
+	}
+	else if (ExitStatus == 0){ 
+		std::cout << "Skipping... \n";
+	}		
+	
 }
 
 void Respecth2OpenSMOKEpp::ReadIdtTypeFromXML()
@@ -321,7 +324,7 @@ void Respecth2OpenSMOKEpp::ReadConstantValueFromXML()
 	}
 	catch (const boost::property_tree::ptree_error& e)
 	{
-		std::string message = "Error in parsing the commonProperties section in XML file: " + std::string(e.what());
+		std::string message = " Error in parsing the commonProperties section in XML file: " + std::string(e.what());
 		ErrorMessage(message);
 	}
 
@@ -380,7 +383,7 @@ void Respecth2OpenSMOKEpp::ReadConstantValueFromXML()
 	}
 	catch (const boost::property_tree::ptree_error& e)
 	{
-		std::string message = "Error in parsing the commonProperties section in XML file: " + std::string(e.what());
+		std::string message = " Error in parsing the commonProperties section in XML file: " + std::string(e.what());
 		ErrorMessage(message);
 	}
 }

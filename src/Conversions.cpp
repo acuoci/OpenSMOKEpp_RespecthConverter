@@ -49,14 +49,14 @@ void CheckAndConvertUnits(const std::string name, double& value, std::string& un
 	}
 	else if (name == "pressure")
 	{
-		if (units != "atm" && units != "bar" && units != "torr" && units != "Torr" && units != "Pa" && units != "kPa" && units != "MPa" && units != "mbar")
+		if (units != "atm" && units != "bar" && units != "torr" && units != "Torr" && units != "Pa" && units != "kPa" && units != "KPa" && units != "MPa" && units != "mbar")
 			ConversionErrorMessage("Unknown pressure units: " + units + ". Available units: atm | bar | mbar | torr | Torr | Pa | kPa | MPa");
 		if (units == "torr" || units == "Torr")
 		{
 			value /= 760.;
 			units = "atm";
 		}
-		else if (units == "kPa")
+		else if (units == "kPa" || units == "KPa")
 		{
 			value *= 1.e3;
 			units = "Pa";
@@ -146,10 +146,23 @@ void CheckAndConvertUnits(const std::string name, std::vector<double>& values, s
 		CheckAndConvertUnits(name, values[i], units);
 }
 
+extern int ExitStatus;
+extern std::vector<std::string> ErrorList;
+extern int IndexExperimentWithError;
+
 void ConversionErrorMessage(const std::string message)
 {
 	std::cout << "Error in conversion of units: " << message << std::endl;
-	std::cout << "Press enter to exit... ";
-	getchar();
-	exit(-1);
+
+	ErrorList[IndexExperimentWithError] = message;
+	//getchar();
+	if (ExitStatus == -1) {
+		std::cout << "Press enter to exit... \n";
+		exit(-1);
+	}
+	else{
+		std::cout << "skipping... \n";
+		;
+	}
+		
 }

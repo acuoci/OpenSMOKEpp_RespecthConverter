@@ -71,9 +71,9 @@ Respecth2OpenSMOKEpp_IgnitionDelay::Respecth2OpenSMOKEpp_IgnitionDelay
 	if (constant_temperature_ == false && constant_pressure_ == false && constant_composition_ == true)
 		type_ = Type::VARIABLE_TP;
 	if (constant_composition_ == false)
-		ErrorMessage("Only constant composition is allowed");
+		ErrorMessage(" Only constant composition is allowed");
 	if (constant_temperature_ == true && constant_pressure_ == true)
-		ErrorMessage("Pressure and Temperature cannot be constant at the same time");
+		ErrorMessage(" Pressure and Temperature cannot be constant at the same time");
 	// Read temperatures
 	if (constant_temperature_ == false)
 	{

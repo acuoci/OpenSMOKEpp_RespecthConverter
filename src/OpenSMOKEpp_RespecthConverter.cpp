@@ -203,18 +203,8 @@ int main(int argc, char** argv)
 	// Convert files
 	std::vector<std::string> apparatus_kind(list_xml_files.size());
 	std::vector<std::string> experiment_type(list_xml_files.size());
-	for (unsigned int j = 0; j < list_xml_files.size(); j++)
-	{
-		std::cout << list_xml_files[j].string() << std::endl;
-
-		boost::property_tree::ptree ptree;
-		boost::property_tree::read_xml(list_xml_files[j].string(), ptree);
-
-		apparatus_kind[j] = ptree.get<std::string>("experiment.apparatus.kind");
-		experiment_type[j] = ptree.get<std::string>("experiment.experimentType");
-
-		std::cout << j+1 << "/" << list_xml_files.size() << " " << apparatus_kind[j] << " " << experiment_type[j] << std::endl;
-	}
+	std::vector<int> indexCorruptedXML(list_xml_files.size());
+	std::vector<boost::filesystem::path> namesOfCourruptedXML(list_xml_files.size());
 
 	for (unsigned int j = 0; j < list_xml_files.size(); j++) {
 
@@ -223,53 +213,114 @@ int main(int argc, char** argv)
 
 	for (unsigned int j = 0; j < list_xml_files.size(); j++)
 	{
+		std::cout << list_xml_files[j].string() << std::endl;
+
+		boost::property_tree::ptree ptree;
+		boost::property_tree::read_xml(list_xml_files[j].string(), ptree);
+		try
+		{
+			apparatus_kind[j] = ptree.get<std::string>("experiment.apparatus.kind");
+		}
+		catch (const boost::property_tree::ptree_error& e)
+		{
+			std::cout << "Fatal error: " << e.what() << std::endl << std::endl;
+			indexCorruptedXML.push_back(j);
+			namesOfCourruptedXML.push_back(list_xml_files[j].string());
+			ErrorList[j] = e.what();
+		}
+		
+		try
+		{
+			experiment_type[j] = ptree.get<std::string>("experiment.experimentType");
+		}
+		catch (const boost::property_tree::ptree_error& e)
+		{
+			std::cout << "Fatal error: " << e.what() << std::endl << std::endl;
+			indexCorruptedXML.push_back(j);
+			namesOfCourruptedXML.push_back(list_xml_files[j].string());
+			ErrorList[j] = e.what();
+		}
+		
+
+		std::cout << j+1 << "/" << list_xml_files.size() << " " << apparatus_kind[j] << " " << experiment_type[j] << std::endl;
+	}
+
+	for (unsigned int j = 0; j < list_xml_files.size(); j++)
+	{
 		IndexExperimentWithError = j;
 		std::cout << "Converting file: " << list_xml_files[j].filename().string() << std::endl;
 		std::cout << apparatus_kind[j] << " " << experiment_type[j] << std::endl;
 
+		for (unsigned int k = 0; k < indexCorruptedXML.size(); k++) {
+			if (indexCorruptedXML[k] == j)
+				//DO NOTHING AND SKIP
+				continue;	
+		}
+
 		if (experiment_type[j] == "jet stirred reactor measurement")
 		{
 			Respecth2OpenSMOKEpp_JetStirredReactor reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
-			reactor.WriteOnASCIIFile( (list_xml_files[j].filename().string() + ".dic" ) );
+			if (ErrorList[j] != "")
+				continue;
+			else
+				reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
 		}
 
 		else if (experiment_type[j] == "laminar burning velocity measurement")
 		{
 			Respecth2OpenSMOKEpp_LaminarBurningVelocity reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
-			reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
+			if (ErrorList[j] != "")
+				continue;
+			else
+				reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
 		}
 
 		else if (experiment_type[j] == "burner stabilized flame speciation measurement")
 		{
 			Respecth2OpenSMOKEpp_BurnerStabilizedFlameSpeciation reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
-			reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
+			if (ErrorList[j] != "")
+				continue;
+			else
+				reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
 		}
 
 		else if (experiment_type[j] == "concentration time profile measurement")
 		{
 			Respecth2OpenSMOKEpp_ConcentrationTimeProfile reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
-			reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
+			if (ErrorList[j] != "")
+				continue;
+			else
+				reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
 		}
 
 		else if (experiment_type[j] == "outlet concentration measurement")
 		{
 			Respecth2OpenSMOKEpp_OutletConcentration reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
-			reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
+			if (ErrorList[j] != "")
+				continue;
+			else
+				reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
 		}
-
+		
 		else if (experiment_type[j] == "ignition delay measurement")
 		{
 			Respecth2OpenSMOKEpp_IgnitionDelay reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
-			reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
+			if (ErrorList[j] != "")
+				continue;
+			else
+				reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
 		}
 
 		else
 		{
 			OpenSMOKE::FatalErrorMessage("Unknown experiment type: " + experiment_type[j]);
 		}
+
+		
 	}
+
 	
 	if (report_file == true)
-		WriteReportFileOnASCII("report.txt", path_output_folder_remote,list_xml_files, ErrorList);
+		WriteReportFileOnASCII("ConversionReport.txt", path_output_folder_remote,list_xml_files, ErrorList);
 
 }

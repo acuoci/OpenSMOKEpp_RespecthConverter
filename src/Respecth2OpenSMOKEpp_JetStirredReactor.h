@@ -53,7 +53,7 @@ private:
 
 	enum class ApparatusKind { STIRRED }	apparatus_kind_;
 	enum class Type {	VARIABLE_T, VARIABLE_P, VARIABLE_V, 
-						VARIABLE_TAU, VARIABLE_COMPOSITION }	type_;
+						VARIABLE_TAU, VARIABLE_COMPOSITION, VARIABLE_TEMPERATURE_TAU}	type_;
 
 	virtual void WriteSimulationData(std::ofstream& fOut);
 

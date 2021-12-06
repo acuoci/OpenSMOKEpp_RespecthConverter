@@ -35,7 +35,6 @@
 \*-----------------------------------------------------------------------*/
 
 #include "Utilities.h"
-
 #include "Conversions.h"
 #include "Composition.h"
 #include "DatabaseSpecies.h"
@@ -416,17 +415,29 @@ void WriteReportFileOnASCII(const boost::filesystem::path file_name, const boost
 
 	std::ofstream fOut(file_name.string(), std::ios::out);
 	fOut.setf(std::ios::scientific);
-	int width = 30;
 
-	fOut << "FileName" << std::setw(width) << "Status" << std::setw(width) << "ErrorType" << std::endl;
-	fOut << "================================================================================" << std::endl;
+	fOut << "FileName" << std::setw(26) << "Status" << std::setw(30) << "ErrorType" << std::endl;
+	fOut << "==================================================================================================================================================" << std::endl;
 	for (unsigned int j = 0; j < FilesList.size(); j++) {
-		fOut << FilesList[j].filename().string() << std::setw(width);
-		if (ErrorsList[j] == "")
-			fOut << "Converted" << std::setw(width) << "None" << std::endl;
-		else
-			fOut << "Errors Occurred" << std::setw(width) << ErrorsList[j] << std::endl;
-	}
 
+		// define the lenght of displayed message
+		int MessageLenght = ErrorsList[j].size();
+		int widthErrorsOccurred = MessageLenght + 12;
+		int NameLength = FilesList[j].filename().string().size();
+		int WhiteSpace = 28 - NameLength;
+		
+		if (ErrorsList[j] == "") {
+
+			fOut << FilesList[j].filename().string() << std::setw(WhiteSpace + 9);
+			fOut << "Converted" << std::setw(22) << "None" << std::endl;
+		
+		}
+		else {
+			
+			fOut << FilesList[j].filename().string() << std::setw(WhiteSpace +  15);
+			fOut << "Errors Occurred" << std::setw(widthErrorsOccurred) << ErrorsList[j] << std::endl;
+		}
+		
+	}
 	fOut.close();
 }

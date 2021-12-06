@@ -73,9 +73,12 @@ Respecth2OpenSMOKEpp_JetStirredReactor::Respecth2OpenSMOKEpp_JetStirredReactor
 	else if (constant_temperature_ == true && constant_pressure_ == true && constant_composition_ == false &&
 		constant_residencetime_ == true && constant_volume_ == true)
 		type_ = Type::VARIABLE_COMPOSITION;
+	else if (constant_temperature_ == false && constant_pressure_ == true && constant_composition_ == true &&
+		constant_residencetime_ == false && constant_volume_ == true)
+		type_ = Type::VARIABLE_TEMPERATURE_TAU;
 	else
 	{
-		ErrorMessage("Possible combinations of constant variables: (P,X,V,tau) | (T,X,V,tau) | (T,P,X,tau) | (T,P,X,V) | (T,P,V,tau)");
+		ErrorMessage(" Possible combinations of constant variables: (P,X,V,tau) | (T,X,V,tau) | (T,P,X,tau) | (T,P,X,V) | (T,P,V,tau) | (P,X,V)");
 	}
 	// Read non constant variables
 	std::cout << " * Reading dataGroup section..." << std::endl;
@@ -109,6 +112,10 @@ Respecth2OpenSMOKEpp_JetStirredReactor::Respecth2OpenSMOKEpp_JetStirredReactor
 	if (type_ == Type::VARIABLE_COMPOSITION) {
 		ErrorMessage("Combination of constant variable (P,T,V,tau) not yet implemented!");
 	}
+	// TODO: Double parametric at variable temperature and residence time
+	if (type_ == Type::VARIABLE_COMPOSITION) {
+		ErrorMessage("Combination of constant variable (P,X,V) not yet implemented!");
+	}
 }
 
 void Respecth2OpenSMOKEpp_JetStirredReactor::WriteSimulationData(std::ofstream& fOut)
@@ -138,6 +145,6 @@ void Respecth2OpenSMOKEpp_JetStirredReactor::WriteSimulationData(std::ofstream& 
 		WriteParametricAnalysisOnASCII("parametric-analysis", "volume", fOut, v_values_, v_units_);
 	else if (type_ == Type::VARIABLE_TAU)
 		WriteParametricAnalysisOnASCII("parametric-analysis", "time", fOut, tau_values_, tau_units_);
-
+	
 	WriteOutputOptionsOnASCII("output-options", fOut, true, 1000, true, 5000, output_folder_simulation_);
 } 
