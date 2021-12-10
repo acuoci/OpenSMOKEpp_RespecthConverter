@@ -296,3 +296,8 @@ tests
 /projects/NetBeans/OpenSMOKE_PerfectlyStirredReactor/dist/
 /projects/NetBeans/OpenSMOKE_ShockTubeReactor/dist/
 projects/MSVS2015/OpenSMOKEpp_BatchReactor/BzzFile.txt
+.vs/
+exe/
+project/
+RespecthToOpenSMOKE.sln
+
