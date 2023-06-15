@@ -31,20 +31,12 @@ find_package (Boost REQUIRED COMPONENTS date_time filesystem program_options sys
 message (STATUS "Boost_INCLUDE_DIRS = ${Boost_INCLUDE_DIRS}")
 message (STATUS "Boost_LIBRARIES    = ${Boost_LIBRARIES}")
 
-# --- Eigen (Compulsory)
-find_package (Eigen3 REQUIRED)
-message (STATUS "Eigen_LIBRARIES = ${EIGEN3_INCLUDE_DIR}")
-
 # --- OpenSmoke++ (Compulsory)
-find_package(OpenSMOKEpp REQUIRED)
-message (STATUS "OpenSMOKE++        = ${OpenSMOKEpp_INCLUDE_DIR}")
 message (STATUS "OpenSMOKEpp_RespecthConverter = ${PROJECT_SOURCE_DIR}")
 
 set(COMPULSORY_LIBRARIES ${Boost_LIBRARIES})
 
-set(COMPULSORY_INCLUDE ${Boost_INCLUDE_DIRS} 
-                       ${EIGEN3_INCLUDE_DIR}
-                       ${OpenSMOKEpp_INCLUDE_DIR})
+set(COMPULSORY_INCLUDE ${Boost_INCLUDE_DIRS})
 
 #--------------------------------------------------------------------
 # Compilation flags and options

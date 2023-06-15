@@ -34,9 +34,7 @@
 |                                                                         |
 \*-----------------------------------------------------------------------*/
 
-#include "OpenSMOKEpp"
-
-#include "Grammar_RespecthConverter.h"
+#include <boost/program_options.hpp>
 
 //Utilities
 #include "Utilities.h"
