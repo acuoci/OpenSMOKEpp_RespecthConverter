@@ -1,0 +1,211 @@
+<experiment>
+    <fileAuthor>Politecnico di Milano, Italy</fileAuthor>
+    <fileDOI>10.5281/zenodo.8038805</fileDOI>
+    <ReSpecThVersion>
+        <major>2</major>
+        <minor>3</minor>
+    </ReSpecThVersion>
+    <bibliographyLink>
+        <description>Vermeire, Florence H.; Carstensen, Hans-Heinrich; Herbinet, Olivier; Battin-Leclerc, Frédérique; Marin, Guy B.; Van Geem, Kevin M., 0000-0003-4191-4960 - Combustion And Flame, 2018, (190), 270-283</description>
+        <referenceDOI>10.1016/j.combustflame.2017.12.001</referenceDOI>
+        <details>
+            <author>Vermeire, Florence H.; Carstensen, Hans-Heinrich; Herbinet, Olivier; Battin-Leclerc, Frédérique; Marin, Guy B.; Van Geem, Kevin M., 0000-0003-4191-4960</author>
+            <journal>Combustion And Flame</journal>
+            <pages>270-283</pages>
+            <title>Experimental And Modeling Study Of The Pyrolysis And Combustion Of Dimethoxymethane</title>
+            <volume>190</volume>
+            <year>2018</year>
+        </details>
+    </bibliographyLink>
+    <experimentType>jet stirred reactor measurement</experimentType>
+    <apparatus>
+        <kind>stirred reactor</kind>
+        <mode>premixed</mode>
+    </apparatus>
+    <commonProperties>
+        <property name="residence time"       sourcetype="reported"  units="s"             ><value>2.8300000000</value></property>
+        <property name="pressure"             sourcetype="reported"  units="bar"           ><value>1.0700000000</value></property>
+        <property name="initial composition"  sourcetype="reported" >
+            <component><speciesLink preferredKey="HE"   CAS="7440-59-7"  InChI="1S/He"                            SMILES="[He]"   chemName="helium"           /><amount units="mole fraction">0.9900000000</amount></component>
+            <component><speciesLink preferredKey="DMM"  CAS="109-87-5"   InChI="1S/C3H8O2/c1-4-3-5-2/h3H2,1-2H3"  SMILES="COCOC"  chemName="Dimethoxymethane" /><amount units="mole fraction">0.0100000000</amount></component>
+        </property>
+    </commonProperties>
+    <dataGroup id="dg1" label="experimental_data">
+        <property name="temperature"  id="x1"   sourcetype="digitized"  units="K"             />
+        <property name="composition"  id="x2"   label="[DMM]"              sourcetype="digitized"  units="mole fraction" ><speciesLink preferredKey="DMM_1"  CAS="109-87-5"  InChI="1S/C3H8O2/c1-4-3-5-2/h3H2,1-2H3"  SMILES="COCOC"  chemName="Dimethoxymethane" /></property>
+
+        <dataPoint><x1>800.4054030000</x1><x2>0.0098651070</x2></dataPoint>
+        <dataPoint><x1>823.8518107000</x1><x2>0.0095325500</x2></dataPoint>
+        <dataPoint><x1>849.9785836000</x1><x2>0.0091330290</x2></dataPoint>
+        <dataPoint><x1>876.1125958000</x1><x2>0.0084632390</x2></dataPoint>
+        <dataPoint><x1>898.9110828000</x1><x2>0.0073197250</x2></dataPoint>
+        <dataPoint><x1>925.0812917000</x1><x2>0.0052985930</x2></dataPoint>
+        <dataPoint><x1>949.9086034000</x1><x2>0.0034122920</x2></dataPoint>
+        <dataPoint><x1>976.0679533000</x1><x2>0.0017965630</x2></dataPoint>
+        <dataPoint><x1>999.5324594000</x1><x2>0.0007883340</x2></dataPoint>
+        <dataPoint><x1>1024.9932130000</x1><x2>0.0002535280</x2></dataPoint>
+        <dataPoint><x1>1051.1109370000</x1><x2>0.0001918420</x2></dataPoint>
+        <dataPoint><x1>1074.5537250000</x1><x2>-0.0000055803</x2></dataPoint>
+        <dataPoint><x1>1099.3285510000</x1><x2>0.0000675672</x2></dataPoint>
+    </dataGroup>
+    <dataGroup id="dg10" label="experimental_data">
+        <property name="temperature"  id="x3"    sourcetype="digitized"  units="K"             />
+        <property name="composition"  id="x4"    label="[CH2O]"             sourcetype="digitized"  units="mole fraction" ><speciesLink preferredKey="CH2O"  CAS="50-00-0"  InChI="1S/CH2O/c1-2/h1H2"  SMILES="C=O"  chemName="formaldehyde" /></property>
+
+        <dataPoint><x3>824.8379880000</x3><x4>0.0000172043</x4></dataPoint>
+        <dataPoint><x3>849.0850730000</x3><x4>0.0002735180</x4></dataPoint>
+        <dataPoint><x3>874.0397826000</x3><x4>0.0006385520</x4></dataPoint>
+        <dataPoint><x3>898.9744307000</x3><x4>0.0009438030</x4></dataPoint>
+        <dataPoint><x3>923.8561893000</x3><x4>0.0010914440</x4></dataPoint>
+        <dataPoint><x3>949.3416173000</x3><x4>0.0010380200</x4></dataPoint>
+        <dataPoint><x3>974.0756502000</x3><x4>0.0007454380</x4></dataPoint>
+        <dataPoint><x3>1000.8486630000</x3><x4>0.0005290160</x4></dataPoint>
+        <dataPoint><x3>1024.2604590000</x3><x4>0.0002961690</x4></dataPoint>
+        <dataPoint><x3>1048.3652900000</x3><x4>0.0001285640</x4></dataPoint>
+        <dataPoint><x3>1073.8598370000</x3><x4>0.0001023140</x4></dataPoint>
+        <dataPoint><x3>1100.0437710000</x3><x4>0.0001304360</x4></dataPoint>
+    </dataGroup>
+    <dataGroup id="dg2" label="experimental_data">
+        <property name="temperature"  id="x5"   sourcetype="digitized"  units="K"             />
+        <property name="composition"  id="x6"   label="[H2]"               sourcetype="digitized"  units="mole fraction" ><speciesLink preferredKey="H2"  CAS="1333-74-0"  InChI="1S/H2/h1H"  SMILES="[HH]"  chemName="hydrogen" /></property>
+
+        <dataPoint><x5>800.6696388000</x5><x6>3.020E-7</x6></dataPoint>
+        <dataPoint><x5>826.1141040000</x5><x6>0.0000735999</x6></dataPoint>
+        <dataPoint><x5>850.2174818000</x5><x6>0.0002141640</x6></dataPoint>
+        <dataPoint><x5>876.3297760000</x5><x6>0.0003551800</x6></dataPoint>
+        <dataPoint><x5>900.4096259000</x5><x6>0.0013741170</x6></dataPoint>
+        <dataPoint><x5>924.4532791000</x5><x6>0.0037443970</x6></dataPoint>
+        <dataPoint><x5>949.8144919000</x5><x6>0.0069257850</x6></dataPoint>
+        <dataPoint><x5>974.5078758000</x5><x6>0.0100394540</x6></dataPoint>
+        <dataPoint><x5>1000.5170090000</x5><x6>0.0140317990</x6></dataPoint>
+        <dataPoint><x5>1023.8910240000</x5><x6>0.0164019280</x6></dataPoint>
+        <dataPoint><x5>1049.2848140000</x5><x6>0.0183671070</x6></dataPoint>
+        <dataPoint><x5>1074.6967020000</x5><x6>0.0196566140</x6></dataPoint>
+        <dataPoint><x5>1102.1193160000</x5><x6>0.0208790070</x6></dataPoint>
+    </dataGroup>
+    <dataGroup id="dg3" label="experimental_data">
+        <property name="temperature"  id="x7"   sourcetype="digitized"  units="K"             />
+        <property name="composition"  id="x8"   label="[CO]"               sourcetype="digitized"  units="mole fraction" ><speciesLink preferredKey="CO"  CAS="630-08-0"  InChI="1S/CO/c1-2"  SMILES="[C-]#[O+]"  chemName="carbon monoxide" /></property>
+
+        <dataPoint><x7>800.6678290000</x7><x8>0.0000678688</x8></dataPoint>
+        <dataPoint><x7>824.7748264000</x7><x8>0.0000732983</x8></dataPoint>
+        <dataPoint><x7>850.2211015000</x7><x8>0.0000790294</x8></dataPoint>
+        <dataPoint><x7>876.3333957000</x7><x8>0.0002200460</x8></dataPoint>
+        <dataPoint><x7>900.4096259000</x7><x8>0.0013741170</x8></dataPoint>
+        <dataPoint><x7>925.1337769000</x7><x8>0.0033391450</x8></dataPoint>
+        <dataPoint><x7>949.8325903000</x7><x8>0.0062501130</x8></dataPoint>
+        <dataPoint><x7>975.8670616000</x7><x8>0.0092965170</x8></dataPoint>
+        <dataPoint><x7>1001.2427530000</x7><x8>0.0119373680</x8></dataPoint>
+        <dataPoint><x7>1023.2955880000</x7><x8>0.0136315240</x8></dataPoint>
+        <dataPoint><x7>1049.3753050000</x7><x8>0.0149887490</x8></dataPoint>
+        <dataPoint><x7>1074.8089120000</x7><x8>0.0154674500</x8></dataPoint>
+        <dataPoint><x7>1098.9068600000</x7><x8>0.0158107150</x8></dataPoint>
+    </dataGroup>
+    <dataGroup id="dg4" label="experimental_data">
+        <property name="temperature"  id="x9"   sourcetype="digitized"  units="K"             />
+        <property name="composition"  id="x10"  label="[C2H6]"             sourcetype="digitized"  units="mole fraction" ><speciesLink preferredKey="C2H6"  CAS="74-84-0"  InChI="1S/C2H6/c1-2/h1-2H3"  SMILES="CC"  chemName="ethane" /></property>
+
+        <dataPoint><x9>803.3259424000</x9><x10>-0.0000810811</x10></dataPoint>
+        <dataPoint><x9>823.9467849000</x9><x10>-0.0000270270</x10></dataPoint>
+        <dataPoint><x9>851.2195122000</x9><x10>0.0000270270</x10></dataPoint>
+        <dataPoint><x9>875.1662971000</x9><x10>0.0000540541</x10></dataPoint>
+        <dataPoint><x9>899.1130820000</x9><x10>0.0000540541</x10></dataPoint>
+        <dataPoint><x9>923.0598670000</x9><x10>0.0002162160</x10></dataPoint>
+        <dataPoint><x9>950.3325942000</x9><x10>0.0002702700</x10></dataPoint>
+        <dataPoint><x9>975.6097561000</x9><x10>0.0003243240</x10></dataPoint>
+        <dataPoint><x9>998.8913525000</x9><x10>0.0002162160</x10></dataPoint>
+        <dataPoint><x9>1023.5033260000</x9><x10>0.0001621620</x10></dataPoint>
+        <dataPoint><x9>1050.1108650000</x9><x10>0.0001621620</x10></dataPoint>
+        <dataPoint><x9>1074.7228380000</x9><x10>0.0001351350</x10></dataPoint>
+        <dataPoint><x9>1098.6696230000</x9><x10>0.0001081080</x10></dataPoint>
+    </dataGroup>
+    <dataGroup id="dg5" label="experimental_data">
+        <property name="temperature"  id="x11"  sourcetype="digitized"  units="K"             />
+        <property name="composition"  id="x12"  label="[CO2]"              sourcetype="digitized"  units="mole fraction" ><speciesLink preferredKey="CO2"  CAS="124-38-9"  InChI="1S/CO2/c2-1-3"  SMILES="C(=O)=O"  chemName="carbon dioxide" /></property>
+
+        <dataPoint><x11>799.9981762000</x11><x12>-0.0000054349</x12></dataPoint>
+        <dataPoint><x11>824.8361642000</x11><x12>0.0000117694</x12></dataPoint>
+        <dataPoint><x11>850.3361825000</x11><x12>0.0000018238</x12></dataPoint>
+        <dataPoint><x11>875.1741705000</x11><x12>0.0000190280</x12></dataPoint>
+        <dataPoint><x11>899.3501283000</x11><x12>0.0000633823</x12></dataPoint>
+        <dataPoint><x11>926.2416866000</x11><x12>0.0002002260</x12></dataPoint>
+        <dataPoint><x11>947.7877613000</x11><x12>0.0004075290</x12></dataPoint>
+        <dataPoint><x11>973.3497878000</x11><x12>0.0005823680</x12></dataPoint>
+        <dataPoint><x11>1000.2376990000</x11><x12>0.0007083420</x12></dataPoint>
+        <dataPoint><x11>1023.7133270000</x11><x12>0.0006657140</x12></dataPoint>
+        <dataPoint><x11>1049.1987550000</x11><x12>0.0006122900</x12></dataPoint>
+        <dataPoint><x11>1073.3345900000</x11><x12>0.0005370770</x12></dataPoint>
+        <dataPoint><x11>1100.1860250000</x11><x12>0.0005543550</x12></dataPoint>
+    </dataGroup>
+    <dataGroup id="dg6" label="experimental_data">
+        <property name="temperature"  id="x13"  sourcetype="digitized"  units="K"             />
+        <property name="composition"  id="x14"  label="[CH3OCHO]"          sourcetype="digitized"  units="mole fraction" ><speciesLink preferredKey="CH3OCHO"  CAS="107-31-3"  InChI="1S/C2H4O2/c1-4-2-3/h2H,1H3"  SMILES="COC=O"  chemName="methyl formate" /></property>
+
+        <dataPoint><x13>801.3392857000</x13><x14>0.0000163650</x14></dataPoint>
+        <dataPoint><x13>826.1160714000</x13><x14>0.0000512180</x14></dataPoint>
+        <dataPoint><x13>849.5535714000</x13><x14>0.0001620370</x14></dataPoint>
+        <dataPoint><x13>875.6696429000</x13><x14>0.0004687500</x14></dataPoint>
+        <dataPoint><x13>899.7767857000</x13><x14>0.0008676730</x14></dataPoint>
+        <dataPoint><x13>924.5535714000</x13><x14>0.0012883950</x14></dataPoint>
+        <dataPoint><x13>949.3303571000</x13><x14>0.0013993350</x14></dataPoint>
+        <dataPoint><x13>972.0982143000</x13><x14>0.0010916150</x14></dataPoint>
+        <dataPoint><x13>1001.5625000000</x13><x14>0.0007627620</x14></dataPoint>
+        <dataPoint><x13>1024.3303570000</x13><x14>0.0004006940</x14></dataPoint>
+        <dataPoint><x13>1049.7767860000</x13><x14>0.0001638680</x14></dataPoint>
+        <dataPoint><x13>1074.5535710000</x13><x14>0.0000628518</x14></dataPoint>
+        <dataPoint><x13>1100.6696430000</x13><x14>0.0000271739</x14></dataPoint>
+    </dataGroup>
+    <dataGroup id="dg7" label="experimental_data">
+        <property name="temperature"  id="x15"  sourcetype="digitized"  units="K"             />
+        <property name="composition"  id="x16"  label="[CH3OH]"            sourcetype="digitized"  units="mole fraction" ><speciesLink preferredKey="CH3OH"  CAS="67-56-1"  InChI="1S/CH4O/c1-2/h2H,1H3"  SMILES="CO"  chemName="methanol" /></property>
+
+        <dataPoint><x15>801.3392857000</x15><x16>0.0001522350</x16></dataPoint>
+        <dataPoint><x15>824.7767857000</x15><x16>0.0001652270</x16></dataPoint>
+        <dataPoint><x15>849.5535714000</x15><x16>0.0002272540</x16></dataPoint>
+        <dataPoint><x15>873.6607143000</x15><x16>0.0003381330</x16></dataPoint>
+        <dataPoint><x15>899.7767857000</x15><x16>0.0005144120</x16></dataPoint>
+        <dataPoint><x15>923.8839286000</x15><x16>0.0007937690</x16></dataPoint>
+        <dataPoint><x15>949.3303571000</x15><x16>0.0011330310</x16></dataPoint>
+        <dataPoint><x15>974.7767857000</x15><x16>0.0011462050</x16></dataPoint>
+        <dataPoint><x15>998.8839286000</x15><x16>0.0010179540</x16></dataPoint>
+        <dataPoint><x15>1024.3303570000</x15><x16>0.0009006940</x16></dataPoint>
+        <dataPoint><x15>1049.1071430000</x15><x16>0.0007561990</x16></dataPoint>
+        <dataPoint><x15>1074.5535710000</x15><x16>0.0007041560</x16></dataPoint>
+        <dataPoint><x15>1100.6696430000</x15><x16>0.0006956520</x16></dataPoint>
+    </dataGroup>
+    <dataGroup id="dg8" label="experimental_data">
+        <property name="temperature"  id="x17"  sourcetype="digitized"  units="K"             />
+        <property name="composition"  id="x18"  label="[CH4]"              sourcetype="digitized"  units="mole fraction" ><speciesLink preferredKey="CH4"  CAS="74-82-8"  InChI="1S/CH4/h1H4"  SMILES="C"  chemName="methane" /></property>
+
+        <dataPoint><x17>800.6651885000</x17><x18>0E-10</x18></dataPoint>
+        <dataPoint><x17>825.9423503000</x17><x18>0.0000540541</x18></dataPoint>
+        <dataPoint><x17>851.2195122000</x17><x18>0.0004324320</x18></dataPoint>
+        <dataPoint><x17>875.1662971000</x17><x18>0.0010810810</x18></dataPoint>
+        <dataPoint><x17>901.1086475000</x17><x18>0.0023783780</x18></dataPoint>
+        <dataPoint><x17>925.0554324000</x17><x18>0.0042972970</x18></dataPoint>
+        <dataPoint><x17>949.0022173000</x17><x18>0.0063783780</x18></dataPoint>
+        <dataPoint><x17>974.2793792000</x17><x18>0.0076756760</x18></dataPoint>
+        <dataPoint><x17>998.8913525000</x17><x18>0.0082162160</x18></dataPoint>
+        <dataPoint><x17>1022.8381370000</x17><x18>0.0081891890</x18></dataPoint>
+        <dataPoint><x17>1048.7804880000</x17><x18>0.0076216220</x18></dataPoint>
+        <dataPoint><x17>1074.0576500000</x17><x18>0.0071891890</x18></dataPoint>
+        <dataPoint><x17>1098.0044350000</x17><x18>0.0069189190</x18></dataPoint>
+    </dataGroup>
+    <dataGroup id="dg9" label="experimental_data">
+        <property name="temperature"  id="x19"  sourcetype="digitized"  units="K"             />
+        <property name="composition"  id="x20"  label="[C2H4]"             sourcetype="digitized"  units="mole fraction" ><speciesLink preferredKey="C2H4"  CAS="74-85-1"  InChI="1S/C2H4/c1-2/h1-2H2"  SMILES="C=C"  chemName="ethylene" /></property>
+
+        <dataPoint><x19>827.2727273000</x19><x20>-0.0000270270</x20></dataPoint>
+        <dataPoint><x19>851.2195122000</x19><x20>-0.0000270270</x20></dataPoint>
+        <dataPoint><x19>877.1618625000</x19><x20>-0.0000540541</x20></dataPoint>
+        <dataPoint><x19>901.1086475000</x19><x20>-0.0000270270</x20></dataPoint>
+        <dataPoint><x19>926.3858093000</x19><x20>0.0000540541</x20></dataPoint>
+        <dataPoint><x19>950.3325942000</x19><x20>0.0003783780</x20></dataPoint>
+        <dataPoint><x19>974.9445676000</x19><x20>0.0005675680</x20></dataPoint>
+        <dataPoint><x19>1000.2217290000</x19><x20>0.0008918920</x20></dataPoint>
+        <dataPoint><x19>1024.8337030000</x19><x20>0.0011351350</x20></dataPoint>
+        <dataPoint><x19>1050.1108650000</x19><x20>0.0015675680</x20></dataPoint>
+        <dataPoint><x19>1076.0532150000</x19><x20>0.0017297300</x20></dataPoint>
+        <dataPoint><x19>1099.3348120000</x19><x20>0.0017297300</x20></dataPoint>
+    </dataGroup>
+</experiment>

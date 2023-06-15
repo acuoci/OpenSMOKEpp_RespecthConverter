@@ -63,7 +63,7 @@ void ReadProfileFromXML(boost::property_tree::ptree& ptree, const std::string na
 
 void WriteMixStatusOnASCII(const std::string name, std::ofstream& fOut, const double t, const std::string t_units, const double p, const std::string p_units, const Composition& composition);
 
-void WriteOutputOptionsOnASCII(const std::string name, std::ofstream& fOut, const bool verbose_video, const int steps_video, const bool verbose_file, const int steps_file, const boost::filesystem::path& output_folder_simulation);
+void WriteOutputOptionsOnASCII(const std::string name, std::ofstream& fOut, const bool verbose_video, const int steps_video, const bool verbose_file, const int steps_file);
 
 void WriteODEParametersOnASCII(const std::string name, std::ofstream& fOut, const double abs_tol, const double rel_tol);
 
@@ -82,10 +82,6 @@ void WriteProfileOnCSV(const boost::filesystem::path file_name,
 	const std::string name2, const std::vector<double> values2, const std::string units2);
 
 void ForceMonotonicProfiles(std::vector<double>& x, std::vector<double>& y);
-
-void WriteReportFileOnASCII(const boost::filesystem::path file_name, const boost::filesystem::path output_folder, 
-	std::vector<boost::filesystem::path> FilesList,
-	std::vector<std::string> ErrorsList);
 
 struct idtType
 {

@@ -38,19 +38,10 @@
 #include <boost/algorithm/string/replace.hpp>
 
 Respecth2OpenSMOKEpp::Respecth2OpenSMOKEpp(	boost::filesystem::path file_name, 
-											const boost::filesystem::path kinetics_folder,
-											const boost::filesystem::path output_folder,
-											const std::vector<std::string> species_in_kinetic_mech,
-											const bool case_sensitive,
+											const boost::filesystem::path output_name,
 											DatabaseSpecies& database_species) :
-database_species_(database_species) 
+database_species_(database_species)
 {
-	kinetics_folder_ = kinetics_folder;
-
-	species_in_kinetic_mech_ = species_in_kinetic_mech;
-
-	case_sensitive_ = case_sensitive;
-
 	boost::property_tree::read_xml(file_name.string(), ptree_);
 
 	// File author (M)
@@ -93,27 +84,14 @@ database_species_(database_species)
 	file_name_xml_ = file_name;
 
 	// Output folder for the specific experiment
-	const bool dedicated_folder_ = false; // TODO
-	if (dedicated_folder_ == true)
-	{
-		output_folder_ = output_folder / file_name_xml_.stem();
-		if (!boost::filesystem::exists(output_folder_))
-			boost::filesystem::create_directory(output_folder_);
-
-		output_folder_simulation_ = output_folder_;
-	}
-	else
-	{
-		output_folder_ = output_folder;
-		output_folder_simulation_ = output_folder / file_name_xml_.stem();
-	}
+	output_folder_ = output_name;
 }
 
 void Respecth2OpenSMOKEpp::WriteOnASCIIFile(boost::filesystem::path file_name)
 {
 	std::cout << " * Writing output OpenSMOKE++ file(s)..." << std::endl;
 
-	std::ofstream fOut( (output_folder_ / file_name).string(), std::ios::out);
+	std::ofstream fOut(file_name.string(), std::ios::out);
 	fOut.setf(std::ios::scientific);
 
 	WriteHeaderText(fOut);
@@ -157,16 +135,7 @@ void Respecth2OpenSMOKEpp::ErrorMessage(const std::string message)
 	std::cout << " * Respecth file:   " << file_name_xml_.string() << std::endl;
 	std::cout << " * Experiment type: " << experiment_type_ << std::endl;
 	std::cout << " * Error message:   " << message << std::endl;
-	ErrorList[IndexExperimentWithError] = message;
-	//getchar();
-	if (ExitStatus == -1){
-		std::cout << "Press enter to exit...";
-		exit(-1);
-	}
-	else if (ExitStatus == 0){ 
-		std::cout << "Skipping... \n";
-	}		
-	
+	getchar();	
 }
 
 void Respecth2OpenSMOKEpp::ReadIdtTypeFromXML()
@@ -375,7 +344,7 @@ void Respecth2OpenSMOKEpp::ReadConstantValueFromXML()
 					if (subtree.get<std::string>("<xmlattr>.name") == "initial composition")
 					{
 						initial_compositions_.resize(1);
-						initial_compositions_[0].ImportFromXMLTree(subtree, species_in_kinetic_mech_, case_sensitive_, database_species_);
+						initial_compositions_[0].ImportFromXMLTree(subtree, database_species_);
 					}
 				}
 			}

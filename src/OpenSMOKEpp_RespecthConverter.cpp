@@ -34,10 +34,8 @@
 |                                                                         |
 \*-----------------------------------------------------------------------*/
 
-// OpenSMOKE++ Definitions
 #include "OpenSMOKEpp"
 
-// Grammar
 #include "Grammar_RespecthConverter.h"
 
 //Utilities
@@ -51,21 +49,16 @@
 #include "Respecth2OpenSMOKEpp_OutletConcentration.h"
 #include "Respecth2OpenSMOKEpp_IgnitionDelay.h"
 
-/* Definition of the exit status for the generation of the report file
-   Be aware to the use it could lead to some generations error */
+
 int ExitStatus = -1;
-std::vector<std::string> ErrorList= {};
+std::vector<std::string> ErrorList = {};
 int IndexExperimentWithError;
 
 int main(int argc, char** argv)
 {
-	boost::filesystem::path executable_file = OpenSMOKE::GetExecutableFileName(argv);
-	boost::filesystem::path executable_folder = executable_file.parent_path();
 
-	OpenSMOKE::OpenSMOKE_logo("OpenSMOKEpp_RespecthConverter", "Alberto Cuoci (alberto.cuoci@polimi.it)");
-	std::string input_file_name_ = "input.dic";
-	std::string main_dictionary_name_ = "RespecthConverter";
-	unsigned int number_threads = 1;
+	std::string input_file_name_;
+	std::string output_file_name_;
 
 	// Program options from command line
 	{
@@ -73,8 +66,8 @@ int main(int argc, char** argv)
 		po::options_description description("Options for the OpenSMOKEpp_RespecthConverter");
 		description.add_options()
 			("help", "print help messages")
-			("input", po::value<std::string>(), "name of the file containing the main dictionary (default \"input.dic\")")
-			("dictionary", po::value<std::string>(), "name of the main dictionary to be used (default \"RespecthConverter\")");
+			("input", po::value<std::string>(), "name of the XML file in respecth format to be converted")
+			("output", po::value<std::string>(), "name of the OpenSMOKE input file generated from the XML file");
 
 		po::variables_map vm;
 		try
@@ -85,14 +78,14 @@ int main(int argc, char** argv)
 			{
 				std::cout << "Basic Command Line Parameters" << std::endl;
 				std::cout << description << std::endl;
-				return OPENSMOKE_SUCCESSFULL_EXIT;
+				return 0;
 			}
 
 			if (vm.count("input"))
 				input_file_name_ = vm["input"].as<std::string>();
 
-			if (vm.count("dictionary"))
-				main_dictionary_name_ = vm["dictionary"].as<std::string>();
+			if (vm.count("output"))
+				output_file_name_ = vm["output"].as<std::string>();
 
 			po::notify(vm); // throws on error, so do after help in case  there are any problems 
 		}
@@ -100,227 +93,84 @@ int main(int argc, char** argv)
 		{
 			std::cerr << "Fatal error: " << e.what() << std::endl << std::endl;
 			std::cerr << description << std::endl;
-			return OPENSMOKE_FATAL_ERROR_EXIT;
+			return -1;
 		}
 	}
 
-	// Defines the grammar rules
-	OpenSMOKE::Grammar_RespecthConverter grammar_respecthconverter;
+	boost::filesystem::path path_input_file_name_ = input_file_name_;
+	boost::filesystem::path path_output_file_name_ = output_file_name_;
 
-	// Define the dictionaries
-	OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
-	dictionaries.ReadDictionariesFromFile(input_file_name_);
-	dictionaries(main_dictionary_name_).SetGrammar(grammar_respecthconverter);
+	// if (!path_input_file_name_.is_absolute())
+	//	path_input_file_name_ = boost::filesystem::current_path() / path_input_file_name_;
 
-	// Kinetics folder
-	boost::filesystem::path path_kinetics_folder_remote;
-	std::vector<std::string> species_in_kinetic_mech;
-	if (dictionaries(main_dictionary_name_).CheckOption("@KineticsFolder") == true)
+	if (!boost::filesystem::is_regular_file(path_input_file_name_))
 	{
-		boost::filesystem::path path_kinetics_folder;
-
-		dictionaries(main_dictionary_name_).ReadPath("@KineticsFolder", path_kinetics_folder);
-		OpenSMOKE::CheckKineticsFolder(path_kinetics_folder);
-
-		// Read names of species
-		boost::property_tree::ptree ptree;
-		boost::property_tree::read_xml( (path_kinetics_folder / "kinetics.xml").string(), ptree);
-
-		// Species in the kinetic mechanism
-		const unsigned int ns = ptree.get<unsigned int>("opensmoke.NumberOfSpecies");
-		species_in_kinetic_mech.resize(ns);
-
-		std::stringstream stream;
-		stream.str(ptree.get< std::string >("opensmoke.NamesOfSpecies"));
-		for (unsigned int i = 0; i < ns; i++)
-			stream >> species_in_kinetic_mech[i];
-
-		path_kinetics_folder_remote = path_kinetics_folder;
+		std::cout << "The provided input file is not a valid" << std::endl;
+		return -1;
 	}
-
-	if (dictionaries(main_dictionary_name_).CheckOption("@KineticsFolderRemote") == true)
-		dictionaries(main_dictionary_name_).ReadPath("@KineticsFolderRemote", path_kinetics_folder_remote);
-
-	boost::filesystem::path path_output_folder_remote;
-	if (dictionaries(main_dictionary_name_).CheckOption("@OutputFolderRemote") == true)
-	{
-		dictionaries(main_dictionary_name_).ReadPath("@OutputFolderRemote", path_output_folder_remote);
-		if (!boost::filesystem::exists(path_output_folder_remote))
-			boost::filesystem::create_directory(path_output_folder_remote);
-	}
-
-	bool report_file = false;
-	if (dictionaries(main_dictionary_name_).CheckOption("@WriteReportFile") == true)
-		dictionaries(main_dictionary_name_).ReadBool("@WriteReportFile", report_file);
-
-	if (report_file == true)
-		ExitStatus = 0;
-
-	bool case_sensitive = false;
-	if (dictionaries(main_dictionary_name_).CheckOption("@CaseSensitiveSpecies") == true)
-		dictionaries(main_dictionary_name_).ReadBool("@CaseSensitiveSpecies", case_sensitive);
 
 	DatabaseSpecies database_species;
-	if (dictionaries(main_dictionary_name_).CheckOption("@DatabaseSpecies") == true)
-	{
-		boost::filesystem::path path_database_species;
-		dictionaries(main_dictionary_name_).ReadPath("@DatabaseSpecies", path_database_species);
-		database_species.SetFromXML(path_database_species);
-	}
-
-	// Read list of xml files to be converted
-	std::vector<boost::filesystem::path> list_xml_files;
-	if (dictionaries(main_dictionary_name_).CheckOption("@InputFolder") == true)
-	{
-		boost::filesystem::path input_folder;
-		dictionaries(main_dictionary_name_).ReadPath("@InputFolder", input_folder);
-		if (input_folder.is_absolute() == false)
-			input_folder = boost::filesystem::current_path() / input_folder;
-
-		if (!boost::filesystem::exists(input_folder))
-		{
-			OpenSMOKE::FatalErrorMessage("The provided @InputFolder is not a directory, but a file");
-		}
-		else
-		{
-			if (boost::filesystem::is_regular_file(input_folder))
-				OpenSMOKE::FatalErrorMessage("The provided @InputFolder is not a directory, but a file");
-			else if (!boost::filesystem::is_directory(input_folder))
-				OpenSMOKE::FatalErrorMessage("The provided @InputFolder exists, but is neither a regular file nor a directory");
-
-			boost::filesystem::recursive_directory_iterator it(input_folder);
-			boost::filesystem::recursive_directory_iterator endit;
-
-			while (it != endit)
-			{
-				if (boost::filesystem::is_regular_file(*it) && it->path().extension() == ".xml")
-					list_xml_files.push_back(it->path());
-				++it;
-			}
-		}
-	}
+	// database_species.SetFromXML("");
 
 	// Convert files
-	std::vector<std::string> apparatus_kind(list_xml_files.size());
-	std::vector<std::string> experiment_type(list_xml_files.size());
-	std::vector<int> indexCorruptedXML(list_xml_files.size());
-	std::vector<boost::filesystem::path> namesOfCourruptedXML(list_xml_files.size());
+	std::string apparatus_kind;
+	std::string experiment_type;
 
-	for (unsigned int j = 0; j < list_xml_files.size(); j++) {
-
-		ErrorList.push_back("");
-	}
-
-	for (unsigned int j = 0; j < list_xml_files.size(); j++)
+	boost::property_tree::ptree ptree;
+	boost::property_tree::read_xml(path_input_file_name_.string(), ptree);
+	try
 	{
-		std::cout << list_xml_files[j].string() << std::endl;
-
-		boost::property_tree::ptree ptree;
-		boost::property_tree::read_xml(list_xml_files[j].string(), ptree);
-		try
-		{
-			apparatus_kind[j] = ptree.get<std::string>("experiment.apparatus.kind");
-		}
-		catch (const boost::property_tree::ptree_error& e)
-		{
-			std::cout << "Fatal error: " << e.what() << std::endl << std::endl;
-			indexCorruptedXML.push_back(j);
-			namesOfCourruptedXML.push_back(list_xml_files[j].string());
-			ErrorList[j] = e.what();
-		}
-		
-		try
-		{
-			experiment_type[j] = ptree.get<std::string>("experiment.experimentType");
-		}
-		catch (const boost::property_tree::ptree_error& e)
-		{
-			std::cout << "Fatal error: " << e.what() << std::endl << std::endl;
-			indexCorruptedXML.push_back(j);
-			namesOfCourruptedXML.push_back(list_xml_files[j].string());
-			ErrorList[j] = e.what();
-		}
-		
-
-		std::cout << j+1 << "/" << list_xml_files.size() << " " << apparatus_kind[j] << " " << experiment_type[j] << std::endl;
+		apparatus_kind = ptree.get<std::string>("experiment.apparatus.kind");
 	}
-
-	for (unsigned int j = 0; j < list_xml_files.size(); j++)
+	catch (const boost::property_tree::ptree_error& e)
 	{
-		IndexExperimentWithError = j;
-		std::cout << "Converting file: " << list_xml_files[j].filename().string() << std::endl;
-		std::cout << apparatus_kind[j] << " " << experiment_type[j] << std::endl;
-
-		for (unsigned int k = 0; k < indexCorruptedXML.size(); k++) {
-			if (indexCorruptedXML[k] == j)
-				//DO NOTHING AND SKIP
-				continue;	
-		}
-
-		if (experiment_type[j] == "jet stirred reactor measurement")
-		{
-			Respecth2OpenSMOKEpp_JetStirredReactor reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
-			if (ErrorList[j] != "")
-				continue;
-			else
-				reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
-		}
-
-		else if (experiment_type[j] == "laminar burning velocity measurement")
-		{
-			Respecth2OpenSMOKEpp_LaminarBurningVelocity reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
-			if (ErrorList[j] != "")
-				continue;
-			else
-				reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
-		}
-
-		else if (experiment_type[j] == "burner stabilized flame speciation measurement")
-		{
-			Respecth2OpenSMOKEpp_BurnerStabilizedFlameSpeciation reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
-			if (ErrorList[j] != "")
-				continue;
-			else
-				reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
-		}
-
-		else if (experiment_type[j] == "concentration time profile measurement")
-		{
-			Respecth2OpenSMOKEpp_ConcentrationTimeProfile reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
-			if (ErrorList[j] != "")
-				continue;
-			else
-				reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
-		}
-
-		else if (experiment_type[j] == "outlet concentration measurement")
-		{
-			Respecth2OpenSMOKEpp_OutletConcentration reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
-			if (ErrorList[j] != "")
-				continue;
-			else
-				reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
-		}
+		std::cout << "Fatal error: " << e.what() << std::endl << std::endl;
+	}
 		
-		else if (experiment_type[j] == "ignition delay measurement")
-		{
-			Respecth2OpenSMOKEpp_IgnitionDelay reactor(list_xml_files[j], path_kinetics_folder_remote, path_output_folder_remote, species_in_kinetic_mech, case_sensitive, database_species);
-			if (ErrorList[j] != "")
-				continue;
-			else
-				reactor.WriteOnASCIIFile((list_xml_files[j].filename().string() + ".dic"));
-		}
-
-		else
-		{
-			OpenSMOKE::FatalErrorMessage("Unknown experiment type: " + experiment_type[j]);
-		}
-
-		
+	try
+	{
+		experiment_type = ptree.get<std::string>("experiment.experimentType");
+	}
+	catch (const boost::property_tree::ptree_error& e)
+	{
+		std::cout << "Fatal error: " << e.what() << std::endl << std::endl;
 	}
 
-	
-	if (report_file == true)
-		WriteReportFileOnASCII("ConversionReport.txt", path_output_folder_remote,list_xml_files, ErrorList);
+	if (experiment_type == "jet stirred reactor measurement")
+	{
+		Respecth2OpenSMOKEpp_JetStirredReactor reactor(path_input_file_name_, path_output_file_name_, database_species);
+		reactor.WriteOnASCIIFile((path_output_file_name_.filename().string() + ".dic"));
+	}
+	else if (experiment_type == "laminar burning velocity measurement")
+	{
+		Respecth2OpenSMOKEpp_LaminarBurningVelocity reactor(path_input_file_name_, path_output_file_name_, database_species);
+		reactor.WriteOnASCIIFile((path_output_file_name_.filename().string() + ".dic"));
+	}
+	else if (experiment_type == "burner stabilized flame speciation measurement")
+	{
+		Respecth2OpenSMOKEpp_BurnerStabilizedFlameSpeciation reactor(path_input_file_name_, path_output_file_name_, database_species);
+		reactor.WriteOnASCIIFile((path_output_file_name_.filename().string() + ".dic"));
+	}
+	else if (experiment_type == "concentration time profile measurement")
+	{
+		Respecth2OpenSMOKEpp_ConcentrationTimeProfile reactor(path_input_file_name_, path_output_file_name_, database_species);
+		reactor.WriteOnASCIIFile((path_output_file_name_.filename().string() + ".dic"));
+	}
+	else if (experiment_type == "outlet concentration measurement")
+	{
+		Respecth2OpenSMOKEpp_OutletConcentration reactor(path_input_file_name_, path_output_file_name_, database_species);
+		reactor.WriteOnASCIIFile((path_output_file_name_.filename().string() + ".dic"));
+	}	
+	else if (experiment_type == "ignition delay measurement")
+	{
+		Respecth2OpenSMOKEpp_IgnitionDelay reactor(path_input_file_name_, path_output_file_name_, database_species);
+		reactor.WriteOnASCIIFile((path_output_file_name_.filename().string() + ".dic"));
+	}
+	else
+	{
+		std::cout << "Unknown experiment type: " << experiment_type << std::endl;
+		return -1;
+	}
 
+	return 0;
 }

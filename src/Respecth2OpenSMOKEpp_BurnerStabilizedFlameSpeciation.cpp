@@ -39,12 +39,9 @@
 
 Respecth2OpenSMOKEpp_BurnerStabilizedFlameSpeciation::Respecth2OpenSMOKEpp_BurnerStabilizedFlameSpeciation
 (const boost::filesystem::path file_name,
-	const boost::filesystem::path kinetics_folder,
-	const boost::filesystem::path output_folder,
-	const std::vector<std::string> species_in_kinetic_mech,
-	const bool case_sensitive,
+	const boost::filesystem::path output_file,
 	DatabaseSpecies& database_species) :
-	Respecth2OpenSMOKEpp(file_name, kinetics_folder, output_folder, species_in_kinetic_mech, case_sensitive, database_species)
+	Respecth2OpenSMOKEpp(file_name, output_file, database_species)
 {
 	// Recognize the apparatus kind
 	const std::string apparatus_kind = ptree_.get<std::string>("experiment.apparatus.kind", "unspecified");

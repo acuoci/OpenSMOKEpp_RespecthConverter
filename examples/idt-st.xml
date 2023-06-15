@@ -1,0 +1,48 @@
+<experiment>
+    <fileAuthor>Politecnico di Milano, Italy</fileAuthor>
+    <fileDOI>10.5281/zenodo.8028390</fileDOI>
+    <ReSpecThVersion>
+        <major>2</major>
+        <minor>3</minor>
+    </ReSpecThVersion>
+    <bibliographyLink>
+        <description>Kéromnès, Alan; Metcalfe, Wayne K.; Heufer, Karl A.; Donohoe, Nicola; Das, Apurba K.; Sung, Chih-Jen; Herzler, Jürgen; Naumann, Clemens; Griebel, Peter; Mathieu, Oliver, 0000-0002-8658-6326; Krejci, Michael C.; Petersen, Eric L, 0000-0002-4572-5916; Pitz, William J.; Curran, Henry, 0000-0002-5124-8562 - Combustion And Flame, 2013, (160), 995-1011</description>
+        <referenceDOI>10.1016/j.combustflame.2013.01.001</referenceDOI>
+        <details>
+            <author>Kéromnès, Alan; Metcalfe, Wayne K.; Heufer, Karl A.; Donohoe, Nicola; Das, Apurba K.; Sung, Chih-Jen; Herzler, Jürgen; Naumann, Clemens; Griebel, Peter; Mathieu, Oliver, 0000-0002-8658-6326; Krejci, Michael C.; Petersen, Eric L, 0000-0002-4572-5916; Pitz, William J.; Curran, Henry, 0000-0002-5124-8562</author>
+            <journal>Combustion And Flame</journal>
+            <pages>995-1011</pages>
+            <title>An Experimental And Detailed Chemical Kinetic Modeling Study Of Hydrogen And Syngas Mixture Oxidation At Elevated Pressures</title>
+            <volume>160</volume>
+            <year>2013</year>
+        </details>
+    </bibliographyLink>
+    <experimentType>ignition delay measurement</experimentType>
+    <apparatus>
+        <kind>shock tube</kind>
+    </apparatus>
+    <commonProperties>
+        <property name="pressure"             sourcetype="reported"  units="atm"           ><value>32.7000000000</value></property>
+        <property name="initial composition"  sourcetype="reported" >
+            <component><speciesLink preferredKey="AR"  CAS="7440-37-1"  InChI="1S/Ar"       SMILES="[Ar]"  chemName="argon"    /><amount units="mole fraction">0.9800000000</amount></component>
+            <component><speciesLink preferredKey="O2"  CAS="7782-44-7"  InChI="1S/O2/c1-2"  SMILES="O=O"   chemName="oxygen"   /><amount units="mole fraction">0.0125000000</amount></component>
+            <component><speciesLink preferredKey="H2"  CAS="1333-74-0"  InChI="1S/H2/h1H"   SMILES="[HH]"  chemName="hydrogen" /><amount units="mole fraction">0.0075000000</amount></component>
+        </property>
+    </commonProperties>
+    <dataGroup id="dg1" label="experimental_data">
+        <property name="temperature"     id="x1"   sourcetype="reported"  units="K"   />
+        <property name="ignition delay"  id="x2"   sourcetype="reported"  units="us"  />
+        <property name="pressure"        id="x3"   sourcetype="reported"  units="atm" />
+
+        <dataPoint><x1>1227.0000000000</x1><x2>322.0000000000</x2><x3>33.1500000000</x3></dataPoint>
+        <dataPoint><x1>1224.0000000000</x1><x2>310.0000000000</x2><x3>31.9400000000</x3></dataPoint>
+        <dataPoint><x1>1215.0000000000</x1><x2>378.0000000000</x2><x3>33.3400000000</x3></dataPoint>
+        <dataPoint><x1>1201.0000000000</x1><x2>605.0000000000</x2><x3>33.9800000000</x3></dataPoint>
+        <dataPoint><x1>1179.0000000000</x1><x2>896.0000000000</x2><x3>32.3400000000</x3></dataPoint>
+        <dataPoint><x1>1179.0000000000</x1><x2>947.0000000000</x2><x3>34.0800000000</x3></dataPoint>
+        <dataPoint><x1>1172.0000000000</x1><x2>1123.0000000000</x2><x3>32.6500000000</x3></dataPoint>
+        <dataPoint><x1>1156.0000000000</x1><x2>1274.0000000000</x2><x3>31.5000000000</x3></dataPoint>
+        <dataPoint><x1>1155.0000000000</x1><x2>1328.0000000000</x2><x3>31.3900000000</x3></dataPoint>
+    </dataGroup>
+    <ignitionType target="OH" type="d/dt max"/>
+</experiment>

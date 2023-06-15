@@ -43,10 +43,7 @@ class Respecth2OpenSMOKEpp_LaminarBurningVelocity : public Respecth2OpenSMOKEpp
 public:
 
 	Respecth2OpenSMOKEpp_LaminarBurningVelocity(const boost::filesystem::path file_name,
-												const boost::filesystem::path kinetics_folder,
-												const boost::filesystem::path output_folder,
-												const std::vector<std::string> species_in_kinetic_mech,
-												const bool case_sensitive,
+												const boost::filesystem::path output_file,
 												DatabaseSpecies& database_species);
 
 private:

@@ -39,13 +39,10 @@
 #include "Utilities.h"
 
 Respecth2OpenSMOKEpp_JetStirredReactor::Respecth2OpenSMOKEpp_JetStirredReactor
-(const boost::filesystem::path file_name,
-	const boost::filesystem::path kinetics_folder,
-	const boost::filesystem::path output_folder,
-	const std::vector<std::string> species_in_kinetic_mech,
-	const bool case_sensitive,
+( const boost::filesystem::path file_name,
+	const boost::filesystem::path output_file,
 	DatabaseSpecies& database_species) :
-	Respecth2OpenSMOKEpp(file_name, kinetics_folder, output_folder, species_in_kinetic_mech, case_sensitive, database_species)
+	Respecth2OpenSMOKEpp(file_name, output_file, database_species)
 {
 	// Recognize the apparatus kind
 	const std::string apparatus_kind = ptree_.get<std::string>("experiment.apparatus.kind", "unspecified");
@@ -76,6 +73,9 @@ Respecth2OpenSMOKEpp_JetStirredReactor::Respecth2OpenSMOKEpp_JetStirredReactor
 	else if (constant_temperature_ == false && constant_pressure_ == true && constant_composition_ == true &&
 		constant_residencetime_ == false && constant_volume_ == true)
 		type_ = Type::VARIABLE_TEMPERATURE_TAU;
+	else if (constant_temperature_ == false && constant_pressure_ == true && constant_composition_ == true &&
+		constant_residencetime_ == true && constant_volume_ == false)
+		type_ = Type::VARIABLE_PRESSURE_TAU;
 	else
 	{
 		ErrorMessage(" Possible combinations of constant variables: (P,X,V,tau) | (T,X,V,tau) | (T,P,X,tau) | (T,P,X,V) | (T,P,V,tau) | (P,X,V)");
@@ -105,7 +105,7 @@ Respecth2OpenSMOKEpp_JetStirredReactor::Respecth2OpenSMOKEpp_JetStirredReactor
 	if (constant_composition_ == false)
 	{
 		std::cout << "    - composition..." << std::endl;
-		::ReadNonConstantValueFromXML(ptree_, "composition", initial_compositions_, species_in_kinetic_mech_, case_sensitive_, database_species_);
+		// ::ReadNonConstantValueFromXML(ptree_, "composition", initial_compositions_, species_in_kinetic_mech_, case_sensitive_, database_species_);
 	}
 
 	// TODO: Management of variable composition and residence time
@@ -146,5 +146,5 @@ void Respecth2OpenSMOKEpp_JetStirredReactor::WriteSimulationData(std::ofstream& 
 	else if (type_ == Type::VARIABLE_TAU)
 		WriteParametricAnalysisOnASCII("parametric-analysis", "time", fOut, tau_values_, tau_units_);
 	
-	WriteOutputOptionsOnASCII("output-options", fOut, true, 1000, true, 5000, output_folder_simulation_);
+	WriteOutputOptionsOnASCII("output-options", fOut, true, 1000, true, 5000);
 } 

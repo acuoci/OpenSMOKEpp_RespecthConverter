@@ -39,12 +39,9 @@
 
 Respecth2OpenSMOKEpp_OutletConcentration::Respecth2OpenSMOKEpp_OutletConcentration
 (	const boost::filesystem::path file_name,
-	const boost::filesystem::path kinetics_folder,
-	const boost::filesystem::path output_folder,
-	const std::vector<std::string> species_in_kinetic_mech,
-	const bool case_sensitive,
+	const boost::filesystem::path output_file,
 	DatabaseSpecies& database_species) :
-	Respecth2OpenSMOKEpp(file_name, kinetics_folder, output_folder, species_in_kinetic_mech, case_sensitive, database_species)
+	Respecth2OpenSMOKEpp(file_name, output_file, database_species)
 {
 	// Recognize the apparatus kind
 	const std::string apparatus_kind = ptree_.get<std::string>("experiment.apparatus.kind", "unspecified");
@@ -95,10 +92,13 @@ void Respecth2OpenSMOKEpp_OutletConcentration::WriteSimulationData(std::ofstream
 	{
 		fOut << "Dictionary PlugFlowReactor" << std::endl;
 		fOut << "{" << std::endl;
-		fOut << "        @KineticsFolder          " << kinetics_folder_.string() << ";" << std::endl;
+		fOut << "        @KineticsFolder          $PATHKINETICFOLDER$;" << std::endl;
 		fOut << "        @Type                    NonIsothermal;" << std::endl;
 		fOut << "        @InletStatus             inlet-status;" << std::endl;
-		fOut << "        @ResidenceTime           " << tau_values_[0] << " " << tau_units_ << ";" << std::endl;
+		if(tau_values_.size() != 0)
+			fOut << "        @ResidenceTime           " << tau_values_[0] << " " << tau_units_ << ";" << std::endl;
+		else
+			fOut << "        @ResidenceTime           $MISSING$;" << std::endl;
 		fOut << "        @ConstantPressure        true;" << std::endl;
 		fOut << "        @Velocity                10 cm/s;" << std::endl;
 		fOut << "        @Options                 output-options;" << std::endl;
@@ -110,7 +110,7 @@ void Respecth2OpenSMOKEpp_OutletConcentration::WriteSimulationData(std::ofstream
 	{
 		fOut << "Dictionary ShockTubeReactor" << std::endl;
 		fOut << "{" << std::endl;
-		fOut << "        @KineticsFolder          " << kinetics_folder_.string() << ";" << std::endl;
+		fOut << "        @KineticsFolder          $PATHKINETICFOLDER$;" << std::endl;
 		fOut << "        @Type                    ReflectedShock;" << std::endl;
 		fOut << "        @ReflectedShockStatus    inlet-status;" << std::endl;
 		fOut << "        @EndTime                 " << tau_values_[0] << " " << tau_units_ << ";" << std::endl;
@@ -128,5 +128,5 @@ void Respecth2OpenSMOKEpp_OutletConcentration::WriteSimulationData(std::ofstream
 	if (type_ == Type::VARIABLE_P_TAU)
 		WriteParametricAnalysisOnASCII("parametric-analysis", "residence-time-pressure", fOut, tau_values_, tau_units_, p_values_, p_units_);
 
-	WriteOutputOptionsOnASCII("output-options", fOut, true, 1000, true, 5000, output_folder_simulation_);
+	WriteOutputOptionsOnASCII("output-options", fOut, true, 1000, true, 5000);
 }

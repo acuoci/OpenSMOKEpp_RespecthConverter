@@ -55,10 +55,7 @@ class Respecth2OpenSMOKEpp
 public:
 
 	Respecth2OpenSMOKEpp(	const boost::filesystem::path file_name, 
-							const boost::filesystem::path kinetics_folder, 
-							const boost::filesystem::path output_folder,
-							const std::vector<std::string> species_in_kinetic_mech,
-							const bool case_sensitive,
+							const boost::filesystem::path output_name,
 							DatabaseSpecies& database_species);
 
 	void ReadConstantValueFromXML();

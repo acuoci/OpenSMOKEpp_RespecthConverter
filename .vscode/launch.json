@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug_Mac_TITO",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Respecth2OSpp.sh",
+            "args": ["--input", "pfr.xml", "--output", "input"],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/examples",
+            "environment": [
+                {"name": "DYLD_LIBRARY_PATH", "value": "/Users/tdinelli/NumericalLibraries/boost/boost-1.79-gcc-12/lib"}
+            ],
+            "externalConsole": false,
+            "MIMode": "lldb"
+        }
+    ]
+}

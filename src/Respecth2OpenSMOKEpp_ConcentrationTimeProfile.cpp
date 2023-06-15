@@ -39,12 +39,9 @@
 
 Respecth2OpenSMOKEpp_ConcentrationTimeProfile::Respecth2OpenSMOKEpp_ConcentrationTimeProfile
 (	const boost::filesystem::path file_name,
-	const boost::filesystem::path kinetics_folder,
-	const boost::filesystem::path output_folder,
-	const std::vector<std::string> species_in_kinetic_mech,
-	const bool case_sensitive,
+	const boost::filesystem::path output_file,
 	DatabaseSpecies& database_species) :
-	Respecth2OpenSMOKEpp(file_name, kinetics_folder, output_folder, species_in_kinetic_mech, case_sensitive, database_species)
+	Respecth2OpenSMOKEpp(file_name, output_file, database_species)
 {
 	// Recognize the apparatus kind
 	const std::string apparatus_kind = ptree_.get<std::string>("experiment.apparatus.kind", "unspecified");
@@ -111,5 +108,5 @@ void Respecth2OpenSMOKEpp_ConcentrationTimeProfile::WriteSimulationData(std::ofs
 
 	WriteMixStatusOnASCII("mix-status", fOut, t_values_[0], t_units_, p_values_[0], p_units_, initial_compositions_[0]);
 
-	WriteOutputOptionsOnASCII("output-options", fOut, true, 1000, true, 1, output_folder_simulation_);
+	WriteOutputOptionsOnASCII("output-options", fOut, true, 1000, true, 1);
 }

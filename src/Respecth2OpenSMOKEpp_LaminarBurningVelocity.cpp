@@ -39,12 +39,9 @@
 
 Respecth2OpenSMOKEpp_LaminarBurningVelocity::Respecth2OpenSMOKEpp_LaminarBurningVelocity
 (	const boost::filesystem::path file_name,
-	const boost::filesystem::path kinetics_folder,
-	const boost::filesystem::path output_folder,
-	const std::vector<std::string> species_in_kinetic_mech,
-	const bool case_sensitive,
+	const boost::filesystem::path output_file,
 	DatabaseSpecies& database_species) :
-	Respecth2OpenSMOKEpp(file_name, kinetics_folder, output_folder, species_in_kinetic_mech, case_sensitive, database_species)
+	Respecth2OpenSMOKEpp(file_name, output_file, database_species)
 {
 	// Recognize the apparatus kind
 	const std::string apparatus_kind = ptree_.get<std::string>("experiment.apparatus.kind", "unspecified");
@@ -79,7 +76,7 @@ Respecth2OpenSMOKEpp_LaminarBurningVelocity::Respecth2OpenSMOKEpp_LaminarBurning
 
 	// Find list of composition
 	if (constant_composition_ == false)
-		ReadNonConstantValueFromXML(ptree_, "composition", initial_compositions_, species_in_kinetic_mech_, case_sensitive_, database_species_);
+		// ReadNonConstantValueFromXML(ptree_, "composition", initial_compositions_, species_in_kinetic_mech_, case_sensitive_, database_species_);
 
 	// Number of simulations
 	{

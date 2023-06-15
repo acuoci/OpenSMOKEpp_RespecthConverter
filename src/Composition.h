@@ -54,7 +54,7 @@ public:
 
 	Composition() { };
 
-	void ImportFromXMLTree(boost::property_tree::ptree& ptree, const std::vector<std::string> species_in_kinetic_mech, const bool case_sensitive, DatabaseSpecies& database_species);
+	void ImportFromXMLTree(boost::property_tree::ptree& ptree, DatabaseSpecies& database_species);
 
 	void Set(	const std::vector<std::string> names, const std::vector<double> values, const std::vector<std::string> units,
 				const std::vector<std::string> names_chem, const std::vector<std::string> CAS,

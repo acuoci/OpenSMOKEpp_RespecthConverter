@@ -40,12 +40,9 @@
 
 Respecth2OpenSMOKEpp_IgnitionDelay::Respecth2OpenSMOKEpp_IgnitionDelay
 (	const boost::filesystem::path file_name,
-	const boost::filesystem::path kinetics_folder,
-	const boost::filesystem::path output_folder,
-	const std::vector<std::string> species_in_kinetic_mech,
-	const bool case_sensitive,
+	const boost::filesystem::path output_file,
 	DatabaseSpecies& database_species) :
-	Respecth2OpenSMOKEpp(file_name, kinetics_folder, output_folder, species_in_kinetic_mech, case_sensitive, database_species)
+	Respecth2OpenSMOKEpp(file_name, output_file, database_species)
 {
 	// Recognize the apparatus kind
 	const std::string apparatus_kind = ptree_.get<std::string>("experiment.apparatus.kind", "unspecified");
@@ -109,7 +106,7 @@ void Respecth2OpenSMOKEpp_IgnitionDelay::WriteSimulationData(std::ofstream& fOut
 
 	fOut << "Dictionary BatchReactor" << std::endl;
 	fOut << "{" << std::endl;
-	fOut << "        @KineticsFolder          " << kinetics_folder_.string() << ";" << std::endl;
+	fOut << "        @KineticsFolder          $PATHKINETICFOLDER$;" << std::endl;
 	if (v_history_values_.size() != 0 ) // Pressure Coefficient ignored due to inconsistency with OpenSMOKE++ format "|| dpdt_values_.size() != 0"
 		fOut << "        @Type                    NonIsothermal-UserDefinedVolume;" << std::endl;
 	else
@@ -129,6 +126,7 @@ void Respecth2OpenSMOKEpp_IgnitionDelay::WriteSimulationData(std::ofstream& fOut
 	fOut << "}" << std::endl;
 	fOut << std::endl;
 
+	// TODO
 	WriteMixStatusOnASCII("mix-status", fOut, t_values_[0], t_units_, p_values_[0], p_units_, initial_compositions_[0]);
 
 	WriteODEParametersOnASCII("ode-parameters", fOut, 1e-14, 1e-7);
@@ -160,7 +158,7 @@ void Respecth2OpenSMOKEpp_IgnitionDelay::WriteSimulationData(std::ofstream& fOut
 		WriteParametricAnalysisOnASCII("parametric-analysis", "temperature-pressure", fOut, list_of_files);
 	}
 
-	WriteOutputOptionsOnASCII("output-options", fOut, true, 1000, true, 5, output_folder_simulation_);
+	WriteOutputOptionsOnASCII("output-options", fOut, true, 1000, true, 5);
 }
 
 void Respecth2OpenSMOKEpp_IgnitionDelay::WriteAdditionalFiles()

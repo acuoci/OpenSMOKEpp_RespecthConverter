@@ -231,7 +231,7 @@ void WriteMixStatusOnASCII(const std::string name, std::ofstream& fOut, const do
 	fOut << std::endl;
 }
 
-void WriteOutputOptionsOnASCII(const std::string name, std::ofstream& fOut, const bool verbose_video, const int steps_video, const bool verbose_file, const int steps_file, const boost::filesystem::path& output_folder_simulation)
+void WriteOutputOptionsOnASCII(const std::string name, std::ofstream& fOut, const bool verbose_video, const int steps_video, const bool verbose_file, const int steps_file)
 {
 	std::cout << "   - output options" << std::endl;
 
@@ -244,7 +244,7 @@ void WriteOutputOptionsOnASCII(const std::string name, std::ofstream& fOut, cons
 	fOut << "        @StepsFile        " << steps_file << ";" << std::endl;
 	fOut << "        @VerboseVideo     " << verbose_video_ << ";" << std::endl;
 	fOut << "        @VerboseASCIIFile " << verbose_file_ << ";" << std::endl;
-	fOut << "        @OutputFolder     " << output_folder_simulation.string() << ";" << std::endl;
+	fOut << "        @OutputFolder     $PATHOUTPUTFOLDER$;" << std::endl;
 	fOut << "}" << std::endl;
 	fOut << std::endl;
 }
@@ -406,38 +406,4 @@ void ForceMonotonicProfiles(std::vector<double>& x, std::vector<double>& y)
 		x.erase(x.begin() + *i);
 		y.erase(y.begin() + *i);
 	}
-}
-
-void WriteReportFileOnASCII(const boost::filesystem::path file_name, const boost::filesystem::path output_folder,
-	std::vector<boost::filesystem::path> FilesList,
-	std::vector<std::string> ErrorsList) 
-{
-
-	std::ofstream fOut(file_name.string(), std::ios::out);
-	fOut.setf(std::ios::scientific);
-
-	fOut << "FileName" << std::setw(26) << "Status" << std::setw(30) << "ErrorType" << std::endl;
-	fOut << "==================================================================================================================================================" << std::endl;
-	for (unsigned int j = 0; j < FilesList.size(); j++) {
-
-		// define the lenght of displayed message
-		int MessageLenght = ErrorsList[j].size();
-		int widthErrorsOccurred = MessageLenght + 12;
-		int NameLength = FilesList[j].filename().string().size();
-		int WhiteSpace = 28 - NameLength;
-		
-		if (ErrorsList[j] == "") {
-
-			fOut << FilesList[j].filename().string() << std::setw(WhiteSpace + 9);
-			fOut << "Converted" << std::setw(22) << "None" << std::endl;
-		
-		}
-		else {
-			
-			fOut << FilesList[j].filename().string() << std::setw(WhiteSpace +  15);
-			fOut << "Errors Occurred" << std::setw(widthErrorsOccurred) << ErrorsList[j] << std::endl;
-		}
-		
-	}
-	fOut.close();
 }

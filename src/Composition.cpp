@@ -62,7 +62,7 @@ void Composition::ImportFromXMLTree(boost::property_tree::ptree& ptree)
 	}
 }
 
-void Composition::ImportFromXMLTree(boost::property_tree::ptree& ptree, const std::vector<std::string> species_in_kinetic_mech, const bool case_sensitive, DatabaseSpecies& database_species)
+void Composition::ImportFromXMLTree(boost::property_tree::ptree& ptree, DatabaseSpecies& database_species)
 {
 	// Import species
 	ImportFromXMLTree(ptree);
@@ -71,7 +71,7 @@ void Composition::ImportFromXMLTree(boost::property_tree::ptree& ptree, const st
 	CheckForSpeciesNames(database_species);
 
 	// Check species names
-	CheckForSpeciesNames(species_in_kinetic_mech, case_sensitive);
+	// CheckForSpeciesNames(species_in_kinetic_mech, case_sensitive);
 	
 	// Convert to mole fractions and check the sum
 	Convert2MoleFractionsAndCheckTheSum();

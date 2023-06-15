@@ -1,0 +1,53 @@
+//-----------------------------------------------------------------//
+//     ____                    ______ __  __  ____  _  ________    //
+//    / __ \                  /  ___ |  \/  |/ __ \| |/ /  ____|   //
+//   | |  | |_ __   ___ _ __ |  (___ | \  / | |  | | ' /| |__      //
+//   | |  | | '_ \ / _ \ '_ \ \___  \| |\/| | |  | |  < |  __|     //
+//   | |__| | |_) |  __/ | | |____)  | |  | | |__| | . \| |____    //
+//    \____/| .__/ \___|_| |_|______/|_|  |_|\____/|_|\_\______|   //
+//          | |                                                    //
+//          |_|                                                    //
+//                                                                 //
+//              http://www.opensmokepp.polimi.it/                  //
+//             http://creckmodeling.chem.polimi.it/                //
+//-----------------------------------------------------------------//
+
+// Bibliography
+// Description: Zhang, Hao, 0000-0002-1639-4089; Schmitt, Steffen; Ruwe, Lena, 0000-0002-6244-1755; Kohse-Höinghaus, Katharina - Combustion And Flame, 2021, (224), 94-107
+// DOI:         10.1016/j.combustflame.2020.08.027
+
+Dictionary PlugFlowReactor
+{
+        @KineticsFolder          $PATHKINETICFOLDER$;
+        @Type                    NonIsothermal;
+        @InletStatus             inlet-status;
+        @ResidenceTime           $MISSING$;
+        @ConstantPressure        true;
+        @Velocity                10 cm/s;
+        @Options                 output-options;
+        @ParametricAnalysis      parametric-analysis;
+}
+
+Dictionary inlet-status
+{
+        @Temperature      9.631500e+02 K ;
+        @Pressure         9.700000e-01 bar ;
+        @MoleFractions    AR 9.300000e-01 O2 5.800000e-02 DMM 1.200000e-02 ;
+}
+
+Dictionary parametric-analysis
+{
+        @Type           residence-time-temperature;
+        @ListOfValues   n.a. ;
+        @ListOfValues2  9.631500e+02 9.581500e+02 9.511500e+02 9.461500e+02 9.401500e+02 9.341500e+02 9.291500e+02 9.231500e+02 9.181500e+02 9.121500e+02 9.061500e+02 9.001500e+02 8.951500e+02 8.901500e+02 8.841500e+02 8.781500e+02 8.721500e+02 8.671500e+02 8.611500e+02 8.561500e+02 8.501500e+02 8.441500e+02 8.391500e+02 8.331500e+02 8.271500e+02 8.221500e+02 8.161500e+02 8.101500e+02 8.051500e+02 7.991500e+02 7.941500e+02 7.881500e+02 7.821500e+02 7.761500e+02 7.711500e+02 7.651500e+02 7.601500e+02 7.541500e+02 7.491500e+02 7.431500e+02 7.371500e+02 7.321500e+02 7.261500e+02 7.211500e+02 7.141500e+02 7.091500e+02 7.031500e+02 6.981500e+02 6.921500e+02 6.861500e+02 6.811500e+02 6.751500e+02 6.691500e+02 6.631500e+02 6.581500e+02 6.521500e+02 6.461500e+02 6.401500e+02 6.351500e+02 6.291500e+02 6.231500e+02 6.181500e+02 6.121500e+02 6.061500e+02 6.001500e+02 5.941500e+02 5.881500e+02 5.821500e+02 5.761500e+02 5.701500e+02 5.641500e+02 5.581500e+02 5.521500e+02 5.461500e+02 5.401500e+02 5.341500e+02 5.281500e+02 5.221500e+02 5.161500e+02 5.101500e+02 K ;
+}
+
+Dictionary output-options
+{
+        @StepsVideo       1000;
+        @StepsFile        5000;
+        @VerboseVideo     true;
+        @VerboseASCIIFile true;
+        @OutputFolder     $PATHOUTPUTFOLDER$;
+}
+

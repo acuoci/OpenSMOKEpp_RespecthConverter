@@ -43,17 +43,15 @@ class Respecth2OpenSMOKEpp_JetStirredReactor : public Respecth2OpenSMOKEpp
 public:
 
 	Respecth2OpenSMOKEpp_JetStirredReactor(	const boost::filesystem::path file_name,
-											const boost::filesystem::path kinetics_folder,
-											const boost::filesystem::path output_folder,
-											const std::vector<std::string> species_in_kinetic_mech,
-											const bool case_sensitive,
+											const boost::filesystem::path output_file,
 											DatabaseSpecies& database_species);
 
 private:
 
 	enum class ApparatusKind { STIRRED }	apparatus_kind_;
 	enum class Type {	VARIABLE_T, VARIABLE_P, VARIABLE_V, 
-						VARIABLE_TAU, VARIABLE_COMPOSITION, VARIABLE_TEMPERATURE_TAU}	type_;
+						VARIABLE_TAU, VARIABLE_COMPOSITION, 
+						VARIABLE_TEMPERATURE_TAU, VARIABLE_PRESSURE_TAU}	type_;
 
 	virtual void WriteSimulationData(std::ofstream& fOut);
 
